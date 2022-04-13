@@ -8,8 +8,8 @@
 import Foundation
 
 protocol SignInPresentationLogic {
-    func presentUser(_ response: SignInModel.ViewModel)
-    func presentError(_ error: LoginError, for response: SignInModel.ViewModel)
+    func presentUser(_ response: SignInModels.ViewModel)
+    func presentError(_ error: LoginError, for response: SignInModels.ViewModel)
 }
 
 class SignInPresenter: SignInPresentationLogic {
@@ -23,24 +23,24 @@ class SignInPresenter: SignInPresentationLogic {
     }
     
     // MARK: - Methods
-    func presentUser(_ response: SignInModel.ViewModel) {
+    func presentUser(_ response: SignInModels.ViewModel) {
         let login = "✅ " + response.login
         let password = "✅ " + response.password
-        let viewModel = SignInModel.ViewModel(login: login, password: password)
+        let viewModel = SignInModels.ViewModel(login: login, password: password)
         viewController?.displayUser(viewModel)
     }
     
-    func presentError(_ error: LoginError, for response: SignInModel.ViewModel) {
+    func presentError(_ error: LoginError, for response: SignInModels.ViewModel) {
         switch error {
         case .wrongEmail:
             let login = "❌ " + response.login
             let password = response.password
-            let viewModel = SignInModel.ViewModel(login: login, password: password)
+            let viewModel = SignInModels.ViewModel(login: login, password: password)
             viewController?.displayUser(viewModel)
         case .wrongPassword:
             let login = "✅ " + response.login
             let password = response.password
-            let viewModel = SignInModel.ViewModel(login: login, password: password)
+            let viewModel = SignInModels.ViewModel(login: login, password: password)
             viewController?.displayUser(viewModel)
         }
     }

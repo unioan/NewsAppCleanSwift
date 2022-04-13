@@ -10,13 +10,22 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
+    
+    // Strong reference to coordinator (Declare)
+    var authorizationCoordinator: AuthorizationCoordinator?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
+        
         PasswordManager.shared.createTestAccount()
         window = UIWindow(windowScene: scene)
-        window?.rootViewController = UINavigationController(rootViewController: SignInViewController())
+        
+        // Initialize AuthorizationCoordinator with navigationController
+        window?.rootViewController = ProfileViewController()//UINavigationController()
+        //authorizationCoordinator = AuthorizationCoordinator(navigationController: window?.rootViewController as! UINavigationController)
+        
+        // Initializes and displays SignInViewController
+        //authorizationCoordinator?.start()
         window?.makeKeyAndVisible()
     }
 

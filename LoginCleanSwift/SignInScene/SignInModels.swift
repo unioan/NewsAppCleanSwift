@@ -7,7 +7,9 @@
 
 import Foundation
 
-enum SignInModel {
+enum SignInModels {
+    
+    
     
     struct Request {
         let login: String

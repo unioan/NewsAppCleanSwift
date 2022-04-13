@@ -9,7 +9,7 @@ import UIKit
 
 protocol SignInViewInput: AnyObject {
     var delegate: SignInViewOutput? { get set }
-    func displayUser(_ viewModel: SignInModel.ViewModel)
+    func displayUser(_ viewModel: SignInModels.ViewModel)
 }
 
 class SignInView: UIView {
@@ -20,13 +20,15 @@ class SignInView: UIView {
     // MARK: - UI Elements
     private let loginLabel: UILabel = {
         let label = UILabel()
-        label.text = "Login"
+        let title = NSAttributedString(string: "Login", attributes: [.font: UIFont.boldSystemFont(ofSize: 16)])
+        label.attributedText = title
         return label
     }()
     
     private let passwordLabel: UILabel = {
         let label = UILabel()
-        label.text = "Password"
+        let title = NSAttributedString(string: "Password", attributes: [.font: UIFont.boldSystemFont(ofSize: 16)])
+        label.attributedText = title
         return label
     }()
     
@@ -35,7 +37,7 @@ class SignInView: UIView {
         tf.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 5))
         tf.leftViewMode = .always
         tf.placeholder = "example@gmail.com"
-        tf.layer.cornerRadius = 14
+        tf.layer.cornerRadius = 20
         tf.layer.borderWidth = 2
         tf.layer.borderColor = UIColor.darkGray.cgColor
         return tf
@@ -46,7 +48,7 @@ class SignInView: UIView {
         tf.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 5))
         tf.leftViewMode = .always
         tf.placeholder = "🔒"
-        tf.layer.cornerRadius = 14
+        tf.layer.cornerRadius = 20
         tf.layer.borderWidth = 2
         tf.layer.borderColor = UIColor.darkGray.cgColor
         return tf
@@ -59,7 +61,8 @@ class SignInView: UIView {
         
         let button = UIButton()
         button.configuration = configuration
-        button.setTitle("Submit", for: .normal)
+        let attributes = NSAttributedString(string: "Log in", attributes: [.font: UIFont.boldSystemFont(ofSize: 20)])
+        button.setAttributedTitle(attributes, for: .normal)
         button.addTarget(self, action: #selector(loginDataSubmited), for: .touchUpInside)
         return button
     }()
@@ -72,8 +75,9 @@ class SignInView: UIView {
         
         let button = UIButton()
         button.configuration = configuration
-        button.setTitle("AutoFill", for: .normal)
-        button.addTarget(self, action: #selector(autoFillButtonTapped), for: .touchUpInside)
+        let attributes = NSAttributedString(string: "Sign up", attributes: [.font: UIFont.boldSystemFont(ofSize: 20)])
+        button.setAttributedTitle(attributes, for: .normal)
+        button.addTarget(self, action: #selector(signUpButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -93,11 +97,11 @@ class SignInView: UIView {
         delegate?.loginDataSubmited(login: loginTF.text!, password: passwordTF.text!)
     }
     
-    @objc func autoFillButtonTapped() {
-        delegate?.autofillButtonTapped()
+    @objc func signUpButtonTapped() {
+        delegate?.signUpButtonTapped()
     }
     
-    // MARK: - Methods
+    // MARK: - Helpers
     func setupViews() {
         backgroundColor = .white
         
@@ -112,7 +116,7 @@ class SignInView: UIView {
         passwordTF.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    private func setupStacks(_ kind: StackKind) -> UIStackView {
+    private func setupStacks(_ kind: SignInStackView) -> UIStackView {
         switch kind {
         case .loginButtons:
             let buttonStack = UIStackView(arrangedSubviews: [submitButton, autoFillButton])
@@ -135,27 +139,28 @@ class SignInView: UIView {
         
         NSLayoutConstraint.activate([loginTF.centerYAnchor.constraint(equalTo: loginLabel.centerYAnchor),
                                      loginTF.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30),
-                                     loginTF.heightAnchor.constraint(equalToConstant: 30),
+                                     loginTF.heightAnchor.constraint(equalToConstant: 40),
                                      loginTF.widthAnchor.constraint(equalToConstant: 250)])
         
-        NSLayoutConstraint.activate([passwordLabel.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: 30),
+        NSLayoutConstraint.activate([passwordLabel.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: 35),
                                      passwordLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30)])
         
         NSLayoutConstraint.activate([passwordTF.centerYAnchor.constraint(equalTo: passwordLabel.centerYAnchor),
                                      passwordTF.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30),
-                                     passwordTF.heightAnchor.constraint(equalToConstant: 30),
+                                     passwordTF.heightAnchor.constraint(equalToConstant: 40),
                                      passwordTF.widthAnchor.constraint(equalToConstant: 250)])
         
         NSLayoutConstraint.activate([buttonStack.topAnchor.constraint(equalTo: passwordLabel.bottomAnchor, constant: 30),
                                      buttonStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30),
-                                     buttonStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30)])
+                                     buttonStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30),
+                                     buttonStack.heightAnchor.constraint(equalToConstant: 40)])
     }
     
 }
 
 // MARK: - SignInView Input
 extension SignInView: SignInViewInput {
-    func displayUser(_ viewModel: SignInModel.ViewModel) {
+    func displayUser(_ viewModel: SignInModels.ViewModel) {
         loginTF.text = viewModel.login
         passwordTF.text = viewModel.password
     }

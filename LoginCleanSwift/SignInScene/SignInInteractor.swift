@@ -8,13 +8,18 @@
 import Foundation
 
 protocol SignInBusinessLogic {
-    func fetchUser(_ request: SignInModel.Request)
+    func fetchUser(_ request: SignInModels.Request)
+}
+
+protocol SignInVCCoordinatorDelegate: AnyObject { // Talks to coordinator
+    func navigateToSignUpView()
 }
 
 class SignInInteractor: SignInBusinessLogic {
     
     // MARK: - Properties
     var presentor: SignInPresentationLogic!
+    weak var coordinator: SignInVCCoordinatorDelegate?
     
     // MARK: - Life Cycle
     deinit {
@@ -22,9 +27,9 @@ class SignInInteractor: SignInBusinessLogic {
     }
     
     // MARK: - Methods
-    func fetchUser(_ request: SignInModel.Request) {
-        let userLoginDataModel = UserLoginDataModel(request)
-        let viewModel = SignInModel.ViewModel(login: request.login, password: request.password)
+    func fetchUser(_ request: SignInModels.Request) {
+        let userLoginDataModel = UserAuthData(request)
+        let viewModel = SignInModels.ViewModel(login: request.login, password: request.password)
         
         PasswordManager.shared.checkPassword(for: userLoginDataModel) { result in
             switch result {
@@ -34,6 +39,11 @@ class SignInInteractor: SignInBusinessLogic {
                 presentor.presentError(error, for: viewModel)
             }
         }
+    }
+    
+    func navigateToSignUpViewController() {
+        print("navigateToSignUpViewController SignInInteractor - TAPPED! / coordinator \(coordinator)")
+        coordinator?.navigateToSignUpView()
     }
     
 }

@@ -8,27 +8,32 @@
 import UIKit
 
 protocol SignInDisplayLogic { // Presenter communicates with ViewController through this interface
-    func displayUser(_ viewModel: SignInModel.ViewModel)
+    func displayUser(_ viewModel: SignInModels.ViewModel)
 }
 
 protocol SignInViewOutput: AnyObject { // View communicates with ViewController through this interface
-    func autofillButtonTapped()
+    func signUpButtonTapped()
     func loginDataSubmited(login: String, password: String)
 }
+
 
 class SignInViewController: UIViewController {
     
     // MARK: - Properties
     weak var signInView: SignInViewInput?
-    var interactor: SignInInteractor!
+    var interactor: SignInInteractor?
+    var coordinator: AuthorizationCoordinator?
+    
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Log in"
+        title = "Authorization"
+        navigationItem.backButtonTitle = "Back"
         
         setupDependencies()
     }
+    
     
     // MARK: - Methods
     func setupDependencies() {
@@ -48,7 +53,7 @@ class SignInViewController: UIViewController {
 
 // MARK: - SignIn DisplayLogic
 extension SignInViewController: SignInDisplayLogic {
-    func displayUser(_ viewModel: SignInModel.ViewModel) {
+    func displayUser(_ viewModel: SignInModels.ViewModel) {
         signInView?.displayUser(viewModel)
     }
 }
@@ -56,12 +61,12 @@ extension SignInViewController: SignInDisplayLogic {
 // MARK: - SignIn ViewOutput
 extension SignInViewController: SignInViewOutput {
     func loginDataSubmited(login: String, password: String) {
-        let userSubmitedData = SignInModel.Request(login: login, password: password)
+        let userSubmitedData = SignInModels.Request(login: login, password: password)
         interactor?.fetchUser(userSubmitedData)
+        // login: "11111@gmail.com", password: "111111"
     }
     
-    func autofillButtonTapped() {
-        print("ViewController autofillButton - Tapped!")
-        interactor?.fetchUser(SignInModel.Request(login: "11111@gmail.com", password: "111111"))
+    func signUpButtonTapped() {
+        coordinator?.navigateToSignUpView()
     }
 }
