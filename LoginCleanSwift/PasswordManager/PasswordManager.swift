@@ -9,9 +9,8 @@ import Foundation
 
 class PasswordManager {
     
+    private var logged = false
     private var defaults = UserDefaults.standard
-    private let encoder = JSONEncoder()
-    private let decoder = JSONDecoder()
     
     class var shared: PasswordManager {
         struct Static {
@@ -20,53 +19,31 @@ class PasswordManager {
         return Static.instance
     }
     
-    func createTestAccount() {
-        saveLoginAndPassword(login: "11111@gmail.com", password: "11111")
+    func isLoged() -> Bool {
+        return logged
     }
     
     func register(user: UserModel, completion: () -> ()) {
         if  defaults.object(forKey: user.login) == nil {
-            defaults.set(user, forKey: user.login)
-            defaults.set(UserAuthData(login: user.login, password: user.password), forKey: user.login)
+            let userAuth = UserAuthData(user)
+            defaults.set(userAuth, forKey: user.login)
             completion()
         }
     }
     
-    func login(user: UserAuthData, completion: (Result<UserModel, LoginError>) -> ()) {
-       
-        let userModel: UserModel? = defaults.object(for: user.login, logType: .userModel)
-        
-        guard let userObject = defaults.object(forKey: user.login) as? Data,
-        let userModel = defaults.object(forKey: user.login) as? Data else {
+    func signIn(with request: SignInModels.Request, completion: (Result<UserModel, LoginError>) -> ()) {
+        guard let userAuthData = defaults.object(forKey: request.login) as? UserAuthData else { // Gain UserAuth object
             completion(.failure(.wrongEmail))
             return
         }
-
-        let authUser = try! decoder.decode(UserModel.self, from: userObject)
-        let userModel = try! decoder.decode(UserModel.self, from: userObject)
-        
-        if user.password == authUser.password {
-            completion(.success(registeredUser))
-        }
-
-    }
-    
-    func saveLoginAndPassword(login: String, password: String) {
-        let registeredUser = UserAuthData(login: login, password: password)
-        let data = try! encoder.encode(registeredUser)
-        defaults.setValue(data, forKey: login)
-    }
-    
-    func checkPassword(for user: UserAuthData, result: (Result<UserAuthData, LoginError>) -> ()) {
-        guard let userObject = defaults.object(forKey: user.login) as? Data else {
-            result(.failure(.wrongEmail))
+        guard let userModel = userAuthData.userModel, request.password == userAuthData.password else { // Verifies password & gets model
+            completion(.failure(.wrongPassword))
             return
         }
-        
-        let registeredUser = try! decoder.decode(UserAuthData.self, from: userObject)
-        if user.password == registeredUser.password {
-            result(.success(user))
-        }
+        logged.toggle()
+        completion(.success(userModel))
     }
+    
+    
     
 }

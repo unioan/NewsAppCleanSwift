@@ -17,15 +17,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
         
-        PasswordManager.shared.createTestAccount()
+        
         window = UIWindow(windowScene: scene)
         
         // Initialize AuthorizationCoordinator with navigationController
-        window?.rootViewController = ProfileViewController()//UINavigationController()
-        //authorizationCoordinator = AuthorizationCoordinator(navigationController: window?.rootViewController as! UINavigationController)
+        window?.rootViewController = UINavigationController()
+        authorizationCoordinator = AuthorizationCoordinator(navigationController: window?.rootViewController as! UINavigationController)
         
         // Initializes and displays SignInViewController
-        //authorizationCoordinator?.start()
+        authorizationCoordinator?.start()
         window?.makeKeyAndVisible()
     }
 

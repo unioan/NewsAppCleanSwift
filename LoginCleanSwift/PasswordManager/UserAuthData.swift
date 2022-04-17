@@ -22,9 +22,9 @@ struct UserAuthData: Codable {
         password = request.password
     }
     
-    init(login: String, password: String, userModel: UserModel) {
-        self.login = login
-        self.password = password
+    init(_ userModel: UserModel) {
+        self.login = userModel.login
+        self.password = userModel.password
         self.userModel = userModel
     }
     
@@ -35,7 +35,7 @@ struct UserModel: Codable {
     let password: String
     let name: String
     let number: String
-    let photo: Data
+    let photo: Data?
 }
 
 

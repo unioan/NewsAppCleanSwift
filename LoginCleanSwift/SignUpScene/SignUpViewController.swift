@@ -8,7 +8,7 @@
 import UIKit
 
 protocol SignUpViewOutput: AnyObject {
-    func register(user: SignInModels.Request)
+    func register(_ userAuthData: SignUpModel.RegisterUser.Request)
 }
 
 protocol SignUpViewDisplayLogic: AnyObject {
@@ -48,8 +48,8 @@ class SignUpViewController: UIViewController {
 
 // MARK: - SignUpView Output (sends data to view)
 extension SignUpViewController: SignUpViewOutput {
-    func register(user: SignInModels.Request) {
-        interactor
+    func register(_ userAuthData: SignUpModel.RegisterUser.Request) {
+        interactor?.saveUserAuthData(userAuthData)
     }
     
     

@@ -9,7 +9,7 @@ import Foundation
 
 protocol SignUpBusinessLogic {
     var presentor: SignUpPresentationLogic? { get set }
-    func fetchUser(_ request: SignUpModel.RegisterUser.Request)
+    func saveUserAuthData(_ request: SignUpModel.RegisterUser.Request)
 }
 
 protocol SignUpVCCoordinatorDelegate: AnyObject { // Talks to coordinator
@@ -25,7 +25,7 @@ class SignUpInteractor {
 
 // MARK: - SignUpBusinessLogic
 extension SignUpInteractor: SignUpBusinessLogic {
-    func fetchUser(_ request: SignUpModel.RegisterUser.Request) {
+    func saveUserAuthData(_ request: SignUpModel.RegisterUser.Request) {
         // TODO: fetching logic
     }
 }

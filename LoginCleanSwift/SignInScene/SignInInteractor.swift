@@ -31,14 +31,7 @@ class SignInInteractor: SignInBusinessLogic {
         let userLoginDataModel = UserAuthData(request)
         let viewModel = SignInModels.ViewModel(login: request.login, password: request.password)
         
-        PasswordManager.shared.checkPassword(for: userLoginDataModel) { result in
-            switch result {
-            case .success(_):
-                presentor.presentUser(viewModel)
-            case .failure(let error):
-                presentor.presentError(error, for: viewModel)
-            }
-        }
+      
     }
     
     func navigateToSignUpViewController() {

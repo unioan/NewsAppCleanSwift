@@ -15,6 +15,7 @@ protocol Coodrinator {
 
 class AuthorizationCoordinator: Coodrinator {
     var childCoordinators: [Coodrinator] = []
+    let passwordManager = PasswordManager()
     
     unowned let navigationController: UINavigationController
     
@@ -23,9 +24,15 @@ class AuthorizationCoordinator: Coodrinator {
     }
     
     func start() {
-        let signInVC = SignInViewController()
-        signInVC.coordinator = self
-        navigationController.viewControllers = [signInVC]
+        if !passwordManager.isLoged() {
+            let signInVC = SignInViewController()
+            signInVC.coordinator = self
+            navigationController.viewControllers = [signInVC]
+        } else {
+            let profileVC = ProfileViewController()
+            navigationController.isNavigationBarHidden = true // Create separate coordinator for profile
+            navigationController.pushViewController(profileVC, animated: true)
+        }
     }
     
 }

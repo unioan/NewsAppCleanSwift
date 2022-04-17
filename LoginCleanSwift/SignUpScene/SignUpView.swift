@@ -121,7 +121,14 @@ class SignUpView: UIView {
     
     // MARK: - Actions
     @objc func registerButtonPressed() {
-        delegate
+        let userModel = UserModel(login: loginTF.text ?? "No",
+                                  password: passwordTF.text  ?? "No",
+                                  name: nameTF.text ?? "No",
+                                  number: numberTF.text  ?? "No",
+                                  photo: nil)
+        let userAuthData = UserAuthData(userModel)
+        
+        delegate?.register(SignUpModel.RegisterUser.Request(userAuthData: userAuthData))
     }
     
     // MARK: - Helpers
