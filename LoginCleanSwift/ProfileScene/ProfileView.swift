@@ -7,12 +7,32 @@
 
 import UIKit
 
+protocol ProfileViewINPUTDelegate {
+    
+}
+
+
 class ProfileView: UIView {
     
     // MARK: - Properties
+    
+    lazy var onInput: (UserModel?) ->() = { [weak self] userModel in
+        guard let self = self,
+              let userModel = userModel else { return }
+        self.nameLabel.text = userModel.name
+        self.emailLabel.text = userModel.login
+        self.phoneNumberLabel.text = userModel.number
+        if let userPhotoData = userModel.photo {
+            self.photoView.image = UIImage(data: userPhotoData)
+        }
+        print("DEBUG: profileViewDelegate and its userModel: \(userModel)")
+    }
+
+    private weak var profileViewDelegate: ProfileViewOUTPUTDelegate?
+    
     private let photoView: UIImageView = {
         let iv = UIImageView()
-        iv.backgroundColor = .systemYellow
+        //iv.backgroundColor = .systemYellow
         iv.layer.cornerRadius = 140 / 2
         iv.clipsToBounds = true
         iv.contentMode = .scaleAspectFill
@@ -60,6 +80,13 @@ class ProfileView: UIView {
         super.init(frame: frame)
         backgroundColor = .white
         
+        profileViewDelegate?.onInput = { [weak self] userModel in
+            guard let self = self else { return }
+            self.nameLabel.text = userModel.name
+            self.emailLabel.text = userModel.login
+            print("closure triggered")
+        }
+        
         setupViews()
         setupConstrints()
     }
@@ -77,7 +104,7 @@ class ProfileView: UIView {
             addSubview(emileStack)
             emileStack.translatesAutoresizingMaskIntoConstraints = false
             emileStack.axis = .horizontal
-            emileStack.spacing = 15
+            emileStack.spacing = 8
             emileStack.setContentHuggingPriority(.required, for: .horizontal)
             return emileStack
         case .phoneLine:
@@ -85,7 +112,7 @@ class ProfileView: UIView {
             addSubview(phoneStack)
             phoneStack.translatesAutoresizingMaskIntoConstraints = false
             phoneStack.axis = .horizontal
-            phoneStack.spacing = 15
+            phoneStack.spacing = 8
             phoneStack.setContentHuggingPriority(.required, for: .horizontal)
             return phoneStack
         }
@@ -116,13 +143,14 @@ class ProfileView: UIView {
         addSubViewsAndTamicOff([infoStack])
 
         let userDataStack = UIStackView(arrangedSubviews: [photoView, infoStack])
+        userDataStack.spacing = 12
         userDataStack.axis = .horizontal
         userDataStack.alignment = .leading
         userDataStack.setContentHuggingPriority(.required, for: .horizontal)
         addSubViewsAndTamicOff([userDataStack])
         
         
-        NSLayoutConstraint.activate([userDataStack.topAnchor.constraint(equalTo: topAnchor, constant: 60),
+        NSLayoutConstraint.activate([userDataStack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
                                      userDataStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18),
                                      userDataStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -18)])
         

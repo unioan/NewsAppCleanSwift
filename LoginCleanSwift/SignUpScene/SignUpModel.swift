@@ -16,7 +16,15 @@ enum SignUpModel {
         }
         
         struct Response {
+            let name: String
+            let email: String
+            let phone: String
             
+            init(_ profileData: SignUpModel.RegisterUser.Request) {
+                self.name = profileData.userAuthData.userModel?.name ?? "No name"
+                self.email = profileData.userAuthData.login
+                self.phone = profileData.userAuthData.userModel?.number ?? "No phone"
+            }
         }
         
         struct ViewModel {

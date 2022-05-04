@@ -9,16 +9,15 @@ import Foundation
 
 protocol SignUpPresentationLogic {
     var viewController: SignUpViewDisplayLogic? { get set }
-    func presentUser()
+    func successfullyRegistered()
 }
 
 class SignUpPresentor: SignUpPresentationLogic {
     
     weak var viewController: SignUpViewDisplayLogic?
     
-    func presentUser() {
-        // TODO: presentation logic
+    func successfullyRegistered() {
+        viewController?.registrationFinished()
     }
-    
     
 }

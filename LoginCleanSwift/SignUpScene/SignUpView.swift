@@ -8,7 +8,8 @@
 import UIKit
 
 protocol SignUpViewInput: AnyObject {
-    var delegate: SignUpViewOutput? { get set }
+    func transferDataFromSignIn()
+    func setImageToPhotoView(_ image: UIImage)
 }
 
 class SignUpView: UIView {
@@ -16,11 +17,16 @@ class SignUpView: UIView {
     // MARK: - Properties
     weak var delegate: SignUpViewOutput?
     
-    private let photoView: UIImageView = {
+    private lazy var photoView: UIImageView = {
         let iv = UIImageView()
-        iv.backgroundColor = .systemYellow
         iv.layer.cornerRadius = 140 / 2
         iv.clipsToBounds = true
+        iv.contentMode = .scaleAspectFill
+        iv.image = UIImage(systemName: "photo.circle")
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(photoViewTapped))
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(tapGesture)
         return iv
     }()
     
@@ -120,12 +126,18 @@ class SignUpView: UIView {
     }
     
     // MARK: - Actions
+    @objc func photoViewTapped() {
+        delegate?.pickImage()
+    }
+    
     @objc func registerButtonPressed() {
+        let photoData = photoView.image?.pngData()
+        
         let userModel = UserModel(login: loginTF.text ?? "No",
                                   password: passwordTF.text  ?? "No",
                                   name: nameTF.text ?? "No",
                                   number: numberTF.text  ?? "No",
-                                  photo: nil)
+                                  photo: photoData)
         let userAuthData = UserAuthData(userModel)
         
         delegate?.register(SignUpModel.RegisterUser.Request(userAuthData: userAuthData))
@@ -187,7 +199,11 @@ class SignUpView: UIView {
 
 // MARK: - SignUpView Input (recives data from VC)
 extension SignUpView: SignUpViewInput {
+    func setImageToPhotoView(_ image: UIImage) {
+        photoView.image = image
+    }
     
-    
-    
+    func transferDataFromSignIn() {
+        // ToDo smth
+    }
 }

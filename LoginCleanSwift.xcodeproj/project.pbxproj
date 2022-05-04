@@ -36,7 +36,8 @@
 		51511D5627F994A80093D4B8 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51511D5527F994A80093D4B8 /* SignInView.swift */; };
 		5189E4822804720B00A0CCBF /* SignInModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5189E4812804720B00A0CCBF /* SignInModels.swift */; };
 		5189E4842804A50D00A0CCBF /* UserDefaultExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5189E4832804A50D00A0CCBF /* UserDefaultExt.swift */; };
-		5189E4862805A75400A0CCBF /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5189E4852805A75400A0CCBF /* AuthManager.swift */; };
+		5189E488280C35AF00A0CCBF /* ProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5189E487280C35AF00A0CCBF /* ProfileCoordinator.swift */; };
+		5189E48A281017B100A0CCBF /* AuthorizationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5189E489281017B100A0CCBF /* AuthorizationCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,7 +72,8 @@
 		51511D5527F994A80093D4B8 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		5189E4812804720B00A0CCBF /* SignInModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInModels.swift; sourceTree = "<group>"; };
 		5189E4832804A50D00A0CCBF /* UserDefaultExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultExt.swift; sourceTree = "<group>"; };
-		5189E4852805A75400A0CCBF /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		5189E487280C35AF00A0CCBF /* ProfileCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCoordinator.swift; sourceTree = "<group>"; };
+		5189E489281017B100A0CCBF /* AuthorizationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,7 +100,6 @@
 		514BC70F27FAD911005D3CF7 /* PasswordManager */ = {
 			isa = PBXGroup;
 			children = (
-				5189E4852805A75400A0CCBF /* AuthManager.swift */,
 				514BC70927FACBC6005D3CF7 /* PasswordManager.swift */,
 				514BC70D27FAD468005D3CF7 /* UserAuthData.swift */,
 				514BC71027FAD96E005D3CF7 /* LoginError.swift */,
@@ -158,6 +159,8 @@
 			isa = PBXGroup;
 			children = (
 				514BC73A27FF1FF6005D3CF7 /* Coordinator.swift */,
+				5189E489281017B100A0CCBF /* AuthorizationCoordinator.swift */,
+				5189E487280C35AF00A0CCBF /* ProfileCoordinator.swift */,
 				51511D4B27F8D5580093D4B8 /* SignInScene */,
 				514BC72A27FE0C8C005D3CF7 /* SignUpScene */,
 				514BC73C2801A9BE005D3CF7 /* ProfileScene */,
@@ -266,9 +269,9 @@
 				514BC7462801AA8D005D3CF7 /* ProfileModel.swift in Sources */,
 				51511D4D27F8D58E0093D4B8 /* SignInViewController.swift in Sources */,
 				514BC71127FAD96E005D3CF7 /* LoginError.swift in Sources */,
+				5189E488280C35AF00A0CCBF /* ProfileCoordinator.swift in Sources */,
 				514BC70027F9C0DF005D3CF7 /* TFLeftViewExt.swift in Sources */,
 				514BC70A27FACBC6005D3CF7 /* PasswordManager.swift in Sources */,
-				5189E4862805A75400A0CCBF /* AuthManager.swift in Sources */,
 				514BC72927FE0C7D005D3CF7 /* StackViewKinds.swift in Sources */,
 				51511D4F27F8D5CA0093D4B8 /* SignInInteractor.swift in Sources */,
 				514BC7422801AA32005D3CF7 /* ProfileInteractor.swift in Sources */,
@@ -284,6 +287,7 @@
 				514BC73E2801AA09005D3CF7 /* ProfileViewController.swift in Sources */,
 				51511D5627F994A80093D4B8 /* SignInView.swift in Sources */,
 				514BC7402801AA24005D3CF7 /* ProfileView.swift in Sources */,
+				5189E48A281017B100A0CCBF /* AuthorizationCoordinator.swift in Sources */,
 				51511D3527F8D4090093D4B8 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -11,15 +11,13 @@ protocol SignInBusinessLogic {
     func fetchUser(_ request: SignInModels.Request)
 }
 
-protocol SignInVCCoordinatorDelegate: AnyObject { // Talks to coordinator
-    func navigateToSignUpView()
-}
+
 
 class SignInInteractor: SignInBusinessLogic {
     
     // MARK: - Properties
     var presentor: SignInPresentationLogic!
-    weak var coordinator: SignInVCCoordinatorDelegate?
+    var state = true
     
     // MARK: - Life Cycle
     deinit {
@@ -28,15 +26,18 @@ class SignInInteractor: SignInBusinessLogic {
     
     // MARK: - Methods
     func fetchUser(_ request: SignInModels.Request) {
-        let userLoginDataModel = UserAuthData(request)
-        let viewModel = SignInModels.ViewModel(login: request.login, password: request.password)
         
-      
-    }
-    
-    func navigateToSignUpViewController() {
-        print("navigateToSignUpViewController SignInInteractor - TAPPED! / coordinator \(coordinator)")
-        coordinator?.navigateToSignUpView()
+        PasswordManager.shared.signIn(with: request) { result in
+            switch result {
+            case .success(let userModel):
+                print("SignInInteractor login: \(userModel.login) password: \(userModel.password)")
+                let response = SignInModels.Response(userModel)
+                presentor.present(.success(response))
+            case .failure(let error):
+                print("Error \(error.rawValue)")
+                presentor.present(.error(error))
+            }
+        }
     }
     
 }

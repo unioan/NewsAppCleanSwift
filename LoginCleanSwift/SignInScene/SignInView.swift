@@ -8,7 +8,6 @@
 import UIKit
 
 protocol SignInViewInput: AnyObject {
-    var delegate: SignInViewOutput? { get set }
     func displayUser(_ viewModel: SignInModels.ViewModel)
 }
 
@@ -63,7 +62,7 @@ class SignInView: UIView {
         button.configuration = configuration
         let attributes = NSAttributedString(string: "Log in", attributes: [.font: UIFont.boldSystemFont(ofSize: 20)])
         button.setAttributedTitle(attributes, for: .normal)
-        button.addTarget(self, action: #selector(loginDataSubmited), for: .touchUpInside)
+        button.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -93,7 +92,7 @@ class SignInView: UIView {
     }
     
     // MARK: - Actions
-    @objc func loginDataSubmited() {
+    @objc func loginButtonTapped() {
         delegate?.loginDataSubmited(login: loginTF.text!, password: passwordTF.text!)
     }
     

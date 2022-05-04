@@ -16,13 +16,17 @@ protocol SignInViewOutput: AnyObject { // View communicates with ViewController 
     func loginDataSubmited(login: String, password: String)
 }
 
+protocol AuthorizationCoordinateDelegate: AnyObject { // Talks to coordinator
+    func navigateToSignUpView()
+}
+
 
 class SignInViewController: UIViewController {
     
     // MARK: - Properties
     weak var signInView: SignInViewInput?
     var interactor: SignInInteractor?
-    var coordinator: AuthorizationCoordinator?
+    weak var authorizationCoordinator: AuthorizationCoordinator?
     
     
     // MARK: - Life Cycle
@@ -51,22 +55,26 @@ class SignInViewController: UIViewController {
     }
 }
 
-// MARK: - SignIn DisplayLogic
-extension SignInViewController: SignInDisplayLogic {
-    func displayUser(_ viewModel: SignInModels.ViewModel) {
-        signInView?.displayUser(viewModel)
-    }
-}
-
-// MARK: - SignIn ViewOutput
+// MARK: - Methods triggered by view
 extension SignInViewController: SignInViewOutput {
     func loginDataSubmited(login: String, password: String) {
         let userSubmitedData = SignInModels.Request(login: login, password: password)
         interactor?.fetchUser(userSubmitedData)
-        // login: "11111@gmail.com", password: "111111"
     }
     
     func signUpButtonTapped() {
-        coordinator?.navigateToSignUpView()
+        authorizationCoordinator?.navigateToSignUpView()
     }
 }
+
+// MARK: - Methods triggered by presentor
+extension SignInViewController: SignInDisplayLogic {
+    func displayUser(_ viewModel: SignInModels.ViewModel) {
+        signInView?.displayUser(viewModel)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.authorizationCoordinator?.navigateToProfile(viewModel.userModel)
+        }
+    }
+}
+
+

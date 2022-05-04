@@ -23,19 +23,21 @@ class PasswordManager {
         return logged
     }
     
-    func register(user: UserModel, completion: () -> ()) {
+    func register(user: UserAuthData, completion: () -> ()) {
         if  defaults.object(forKey: user.login) == nil {
-            let userAuth = UserAuthData(user)
-            defaults.set(userAuth, forKey: user.login)
+            let userData = try! JSONEncoder().encode(user)
+            defaults.set(userData, forKey: user.login)
             completion()
         }
     }
     
     func signIn(with request: SignInModels.Request, completion: (Result<UserModel, LoginError>) -> ()) {
-        guard let userAuthData = defaults.object(forKey: request.login) as? UserAuthData else { // Gain UserAuth object
-            completion(.failure(.wrongEmail))
-            return
+        guard let userData = defaults.object(forKey: request.login) as? Data,
+              let userAuthData = try? JSONDecoder().decode(UserAuthData.self, from: userData)  else {
+                  completion(.failure(.wrongEmail))
+                  return
         }
+
         guard let userModel = userAuthData.userModel, request.password == userAuthData.password else { // Verifies password & gets model
             completion(.failure(.wrongPassword))
             return
