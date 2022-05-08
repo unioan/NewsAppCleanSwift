@@ -61,7 +61,6 @@ extension SignUpViewController: SignUpViewOutput {
     }
     
     func register(_ signUpModelForRequest: SignUpModel.RegisterUser.Request) {
-        print("DEBUG signUpModelForRequest: \(signUpModelForRequest.userAuthData)")
         interactor?.saveUserAuthData(signUpModelForRequest)
     }
 

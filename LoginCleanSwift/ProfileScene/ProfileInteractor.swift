@@ -8,9 +8,23 @@
 import Foundation
 
 protocol ProfileBusinessLogic {
-    
+    func fetchTopNews()
 }
 
 class ProfileInteractor: ProfileBusinessLogic {
+    
+    var presentor: ProfilePresentationLogic?
+    
+    func fetchTopNews() {
+        NewsService.fetchTopNews { result in
+            switch result {
+            case .success(let articleModel):
+                self.presentor?.configureArticleModel(ProfileModel.ArticleDataTransfer.Response(articleModel: articleModel))
+            case .failure(let error):
+                print("DEBUG ERROR ProfileInteractor: \(error)")
+            }
+        }
+    }
+    
     
 }

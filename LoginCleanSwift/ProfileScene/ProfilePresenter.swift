@@ -8,9 +8,15 @@
 import Foundation
 
 protocol ProfilePresentationLogic {
-    
+    func configureArticleModel(_ article: ProfileModel.ArticleDataTransfer.Response)
 }
 
 class ProfilePresenter: ProfilePresentationLogic {
+    
+    var viewController: ProfileDisplayLogic?
+    
+    func configureArticleModel(_ article: ProfileModel.ArticleDataTransfer.Response) {
+        viewController?.displayArticles(ProfileModel.ArticleDataTransfer.ViewModel(articleModel: article.articleModel))
+    }
     
 }

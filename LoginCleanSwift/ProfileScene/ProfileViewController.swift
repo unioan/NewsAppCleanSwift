@@ -7,9 +7,12 @@
 
 import UIKit
 
-protocol ProfileViewOUTPUTDelegate: AnyObject {
-    var onInput: ((_ userModel: UserModel) -> ())? { get set }
-    func changePhone()
+protocol ProfileDisplayLogic {
+    func displayArticles(_ article: ProfileModel.ArticleDataTransfer.ViewModel)
+}
+
+protocol ProfileViewOUTPUTDelegate: UITableViewDelegate, UITableViewDataSource {
+ 
 }
 
 protocol ProfileVCCoordinatorDelegate: AnyObject {
@@ -20,23 +23,36 @@ class ProfileViewController: UIViewController {
     
     // MARK: - Properties
     var profileView: ProfileView?
-    var interactor: ProfileInteractor?
+    var interactor: ProfileBusinessLogic?
     weak var profileCoordinator: ProfileVCCoordinatorDelegate?
     
     var userModel: UserModel? {
-        willSet { profileView?.onInput(newValue) }
+        didSet { profileView?.onUserModelInput(userModel, self) }
     }
     
+    var articleModel: [ProfileModel.ArticleModel] = [] {
+        didSet { profileView?.reloadTableView() }
+    }
+
     // MARK: - Life cycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.isHidden = false
         
         setUpNavigationBackButton()
         setupDependencies()
+        profileView?.onUserModelInput(userModel, self)
         
-        profileView?.onInput(userModel)
-
+        
+        interactor?.fetchTopNews()
+        
+        NewsService.fetchTopNews { result in
+            switch result {
+            case .success(let newsViewModel):
+                self.articleModel.append(newsViewModel)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     // MARK: - Actions
@@ -51,10 +67,40 @@ class ProfileViewController: UIViewController {
     }
     
     func setupDependencies() {
+        let interactor = ProfileInteractor()
+        let presenter = ProfilePresenter()
+        
+        self.interactor = interactor
+        interactor.presentor = presenter
+        presenter.viewController = self
+        
         profileView = ProfileView()
         view = profileView
-        
-        self.interactor = ProfileInteractor()
+    }
+}
+
+
+extension ProfileViewController: ProfileViewOUTPUTDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 140
     }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return articleModel.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: NewsCell.identifier, for: indexPath) as! NewsCell
+        cell.configureCell(with: articleModel[indexPath.row])
+        return cell
+    }
+    
+    
+}
+
+extension ProfileViewController: ProfileDisplayLogic {
+    func displayArticles(_ article: ProfileModel.ArticleDataTransfer.ViewModel) {
+        print("DEBUG THROUGH VIP cycle: \(article.articleModel)")
+    }
 }

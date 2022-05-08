@@ -30,7 +30,6 @@ class SignInInteractor: SignInBusinessLogic {
         PasswordManager.shared.signIn(with: request) { result in
             switch result {
             case .success(let userModel):
-                print("SignInInteractor login: \(userModel.login) password: \(userModel.password)")
                 let response = SignInModels.Response(userModel)
                 presentor.present(.success(response))
             case .failure(let error):

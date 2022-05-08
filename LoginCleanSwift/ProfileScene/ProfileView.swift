@@ -7,32 +7,29 @@
 
 import UIKit
 
-protocol ProfileViewINPUTDelegate {
-    
-}
-
-
 class ProfileView: UIView {
     
     // MARK: - Properties
     
-    lazy var onInput: (UserModel?) ->() = { [weak self] userModel in
+    lazy var onUserModelInput: (UserModel?, ProfileViewController?) ->() = { [weak self] userModel, profileVC in
         guard let self = self,
-              let userModel = userModel else { return }
-        self.nameLabel.text = userModel.name
-        self.emailLabel.text = userModel.login
-        self.phoneNumberLabel.text = userModel.number
+              let userModel = userModel,
+              let profileVc = profileVC else { return }
         if let userPhotoData = userModel.photo {
             self.photoView.image = UIImage(data: userPhotoData)
         }
-        print("DEBUG: profileViewDelegate and its userModel: \(userModel)")
+        self.nameLabel.text = userModel.name
+        self.emailLabel.text = userModel.login
+        self.phoneNumberLabel.text = userModel.number
+        
+        self.newsTableView.delegate = profileVC
+        self.newsTableView.dataSource = profileVC
     }
 
     private weak var profileViewDelegate: ProfileViewOUTPUTDelegate?
     
     private let photoView: UIImageView = {
         let iv = UIImageView()
-        //iv.backgroundColor = .systemYellow
         iv.layer.cornerRadius = 140 / 2
         iv.clipsToBounds = true
         iv.contentMode = .scaleAspectFill
@@ -74,18 +71,19 @@ class ProfileView: UIView {
         label.text = "Number"
         return label
     }()
+     
+    lazy var newsTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.separatorStyle = .none
+        tableView.showsVerticalScrollIndicator = false
+        tableView.register(NewsCell.self, forCellReuseIdentifier: NewsCell.identifier)
+        return tableView
+    }()
     
     // MARK: - Life cycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
-        
-        profileViewDelegate?.onInput = { [weak self] userModel in
-            guard let self = self else { return }
-            self.nameLabel.text = userModel.name
-            self.emailLabel.text = userModel.login
-            print("closure triggered")
-        }
         
         setupViews()
         setupConstrints()
@@ -96,6 +94,9 @@ class ProfileView: UIView {
     }
     
     // MARK: - Helpers
+    func reloadTableView() {
+        newsTableView.reloadData()
+    }
     
     private func setupStacks(_ kind: ProfileViewStack) -> UIStackView {
         switch kind {
@@ -119,7 +120,7 @@ class ProfileView: UIView {
     }
     
     private func setupViews() {
-        addSubViewsAndTamicOff([photoView, nameLabel, emailIcon, emailLabel, phoneIcon, phoneNumberLabel])
+        addSubViewsAndTamicOff([photoView, nameLabel, emailIcon, emailLabel, phoneIcon, phoneNumberLabel, newsTableView])
     }
     
     private func setupConstrints() {
@@ -161,6 +162,11 @@ class ProfileView: UIView {
                                      emailIcon.widthAnchor.constraint(equalToConstant: 20),
                                      phoneIcon.heightAnchor.constraint(equalToConstant: 20),
                                      phoneIcon.widthAnchor.constraint(equalToConstant: 20)])
+        
+        NSLayoutConstraint.activate([newsTableView.topAnchor.constraint(equalTo: userDataStack.bottomAnchor, constant: 15),
+                                     newsTableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+                                     newsTableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+                                     newsTableView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15)])
     }
     
 }
