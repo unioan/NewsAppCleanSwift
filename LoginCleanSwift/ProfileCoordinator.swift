@@ -39,9 +39,21 @@ class ProfileCoordinator: Coodrinator {
 
 
 extension ProfileCoordinator: ProfileVCCoordinatorDelegate {
+    func showWebPage(_ urlString: String) {
+        let webVC = WebViewController()
+        webVC.loadWebPage(urlString)
+        navigationController.pushViewController(webVC, animated: true)
+    }
+    
+    func showSavedNews() {
+        let vc = SavedNewsTableViewController()
+        navigationController.pushViewController(vc, animated: true)
+    }
+    
     func logout() {
         delegate?.navigateToAuthorizationScene()
     }
+    
     
     
 }

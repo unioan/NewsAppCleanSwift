@@ -26,6 +26,7 @@ enum ProfileModel {
         let description: String
         let urlToNewsSource: String
         let imageData: Data
+        var isSaved: Bool = false
         
         init() {
             title = ""

@@ -23,7 +23,7 @@ class AuthorizationCoordinator: Coodrinator {
         signInVC.authorizationCoordinator = self
         navigationController.viewControllers = [signInVC]
         
-        if passwordManager.isLoged() {
+        if passwordManager.isLoged {
             let profileVC = ProfileViewController()
             navigationController.isNavigationBarHidden = true // Create separate coordinator for profile
             navigationController.viewControllers.append(profileVC)

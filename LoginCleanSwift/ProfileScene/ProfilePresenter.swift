@@ -9,6 +9,7 @@ import Foundation
 
 protocol ProfilePresentationLogic {
     func configureArticleModel(_ article: ProfileModel.ArticleDataTransfer.Response)
+    func noMoreNewsLeft()
 }
 
 class ProfilePresenter: ProfilePresentationLogic {
@@ -17,6 +18,11 @@ class ProfilePresenter: ProfilePresentationLogic {
     
     func configureArticleModel(_ article: ProfileModel.ArticleDataTransfer.Response) {
         viewController?.displayArticles(ProfileModel.ArticleDataTransfer.ViewModel(articleModel: article.articleModel))
+    }
+    
+    func noMoreNewsLeft() {
+        print("DEBUG fetchTopNews ERROR case in ProfilePresenter")
+        viewController?.noMoreNewsLeft()
     }
     
 }

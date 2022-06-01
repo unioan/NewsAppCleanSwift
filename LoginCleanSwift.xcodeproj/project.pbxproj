@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		511AA9D32840ECAA008C4678 /* FileManagerExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511AA9D22840ECAA008C4678 /* FileManagerExt.swift */; };
+		511AA9D928426BBA008C4678 /* NewsPersistanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511AA9D828426BBA008C4678 /* NewsPersistanceManager.swift */; };
+		511AA9DB28426CFE008C4678 /* SavedNewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511AA9DA28426CFE008C4678 /* SavedNewsModel.swift */; };
+		511AA9DD28466A6E008C4678 /* ContextualActionExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511AA9DC28466A6E008C4678 /* ContextualActionExt.swift */; };
 		514BC70027F9C0DF005D3CF7 /* TFLeftViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514BC6FF27F9C0DF005D3CF7 /* TFLeftViewExt.swift */; };
 		514BC70A27FACBC6005D3CF7 /* PasswordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514BC70927FACBC6005D3CF7 /* PasswordManager.swift */; };
 		514BC70E27FAD468005D3CF7 /* UserAuthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514BC70D27FAD468005D3CF7 /* UserAuthData.swift */; };
@@ -35,6 +39,8 @@
 		51511D5127F8D5E50093D4B8 /* SignInPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51511D5027F8D5E50093D4B8 /* SignInPresenter.swift */; };
 		51511D5627F994A80093D4B8 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51511D5527F994A80093D4B8 /* SignInView.swift */; };
 		516558C32827D404009E5D77 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516558C22827D404009E5D77 /* DescriptionView.swift */; };
+		516558C52828112B009E5D77 /* SpinerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516558C42828112A009E5D77 /* SpinerView.swift */; };
+		516558C72828419D009E5D77 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516558C62828419D009E5D77 /* WebViewController.swift */; };
 		5189E4822804720B00A0CCBF /* SignInModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5189E4812804720B00A0CCBF /* SignInModels.swift */; };
 		5189E4842804A50D00A0CCBF /* UserDefaultExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5189E4832804A50D00A0CCBF /* UserDefaultExt.swift */; };
 		5189E488280C35AF00A0CCBF /* ProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5189E487280C35AF00A0CCBF /* ProfileCoordinator.swift */; };
@@ -42,9 +48,15 @@
 		5189E48C28250DB500A0CCBF /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5189E48B28250DB400A0CCBF /* NewsCell.swift */; };
 		5189E48E282596B000A0CCBF /* NewsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5189E48D282596B000A0CCBF /* NewsService.swift */; };
 		5189E49128269CDB00A0CCBF /* NewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5189E49028269CDB00A0CCBF /* NewsModel.swift */; };
+		519EE604283F9EF8006E9BA9 /* SavedNewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519EE603283F9EF8006E9BA9 /* SavedNewsCell.swift */; };
+		519EE606283F9F58006E9BA9 /* SavedNewsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519EE605283F9F58006E9BA9 /* SavedNewsTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		511AA9D22840ECAA008C4678 /* FileManagerExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExt.swift; sourceTree = "<group>"; };
+		511AA9D828426BBA008C4678 /* NewsPersistanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsPersistanceManager.swift; sourceTree = "<group>"; };
+		511AA9DA28426CFE008C4678 /* SavedNewsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedNewsModel.swift; sourceTree = "<group>"; };
+		511AA9DC28466A6E008C4678 /* ContextualActionExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextualActionExt.swift; sourceTree = "<group>"; };
 		514BC6FF27F9C0DF005D3CF7 /* TFLeftViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLeftViewExt.swift; sourceTree = "<group>"; };
 		514BC70927FACBC6005D3CF7 /* PasswordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordManager.swift; sourceTree = "<group>"; };
 		514BC70D27FAD468005D3CF7 /* UserAuthData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuthData.swift; sourceTree = "<group>"; };
@@ -75,6 +87,8 @@
 		51511D5027F8D5E50093D4B8 /* SignInPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInPresenter.swift; sourceTree = "<group>"; };
 		51511D5527F994A80093D4B8 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		516558C22827D404009E5D77 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
+		516558C42828112A009E5D77 /* SpinerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinerView.swift; sourceTree = "<group>"; };
+		516558C62828419D009E5D77 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		5189E4812804720B00A0CCBF /* SignInModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInModels.swift; sourceTree = "<group>"; };
 		5189E4832804A50D00A0CCBF /* UserDefaultExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultExt.swift; sourceTree = "<group>"; };
 		5189E487280C35AF00A0CCBF /* ProfileCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCoordinator.swift; sourceTree = "<group>"; };
@@ -82,6 +96,8 @@
 		5189E48B28250DB400A0CCBF /* NewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 		5189E48D282596B000A0CCBF /* NewsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsService.swift; sourceTree = "<group>"; };
 		5189E49028269CDB00A0CCBF /* NewsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsModel.swift; sourceTree = "<group>"; };
+		519EE603283F9EF8006E9BA9 /* SavedNewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedNewsCell.swift; sourceTree = "<group>"; };
+		519EE605283F9F58006E9BA9 /* SavedNewsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedNewsTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,12 +111,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		511AA9D728426945008C4678 /* PersistanceManager */ = {
+			isa = PBXGroup;
+			children = (
+				511AA9D828426BBA008C4678 /* NewsPersistanceManager.swift */,
+				511AA9DA28426CFE008C4678 /* SavedNewsModel.swift */,
+			);
+			name = PersistanceManager;
+			sourceTree = "<group>";
+		};
 		514BC6FC27F9BEBD005D3CF7 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
 				514BC73827FE37EE005D3CF7 /* UIViewExt.swift */,
 				514BC6FF27F9C0DF005D3CF7 /* TFLeftViewExt.swift */,
 				5189E4832804A50D00A0CCBF /* UserDefaultExt.swift */,
+				511AA9D22840ECAA008C4678 /* FileManagerExt.swift */,
+				511AA9DC28466A6E008C4678 /* ContextualActionExt.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -132,6 +159,8 @@
 			children = (
 				514BC72827FE0C7D005D3CF7 /* StackViewKinds.swift */,
 				516558C22827D404009E5D77 /* DescriptionView.swift */,
+				516558C42828112A009E5D77 /* SpinerView.swift */,
+				516558C62828419D009E5D77 /* WebViewController.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -174,9 +203,11 @@
 				51511D4B27F8D5580093D4B8 /* SignInScene */,
 				514BC72A27FE0C8C005D3CF7 /* SignUpScene */,
 				514BC73C2801A9BE005D3CF7 /* ProfileScene */,
+				519EE602283F9EAC006E9BA9 /* SavedNewsScene */,
 				5189E48F282596B700A0CCBF /* API */,
-				514BC6FC27F9BEBD005D3CF7 /* Extension */,
+				511AA9D728426945008C4678 /* PersistanceManager */,
 				514BC70F27FAD911005D3CF7 /* PasswordManager */,
+				514BC6FC27F9BEBD005D3CF7 /* Extension */,
 				514BC72B27FE0CBD005D3CF7 /* Helper */,
 				51511D3227F8D4090093D4B8 /* AppDelegate.swift */,
 				51511D3427F8D4090093D4B8 /* SceneDelegate.swift */,
@@ -208,6 +239,15 @@
 				5189E49028269CDB00A0CCBF /* NewsModel.swift */,
 			);
 			path = API;
+			sourceTree = "<group>";
+		};
+		519EE602283F9EAC006E9BA9 /* SavedNewsScene */ = {
+			isa = PBXGroup;
+			children = (
+				519EE603283F9EF8006E9BA9 /* SavedNewsCell.swift */,
+				519EE605283F9F58006E9BA9 /* SavedNewsTableViewController.swift */,
+			);
+			path = SavedNewsScene;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -286,16 +326,22 @@
 				514BC72F27FE0DCC005D3CF7 /* SignUpView.swift in Sources */,
 				514BC7442801AA66005D3CF7 /* ProfilePresenter.swift in Sources */,
 				514BC73127FE0DE1005D3CF7 /* SignUpInteractor.swift in Sources */,
+				511AA9D32840ECAA008C4678 /* FileManagerExt.swift in Sources */,
 				5189E48C28250DB500A0CCBF /* NewsCell.swift in Sources */,
 				514BC73527FE0E25005D3CF7 /* SignUpModel.swift in Sources */,
 				514BC7462801AA8D005D3CF7 /* ProfileModel.swift in Sources */,
+				519EE606283F9F58006E9BA9 /* SavedNewsTableViewController.swift in Sources */,
+				511AA9DD28466A6E008C4678 /* ContextualActionExt.swift in Sources */,
 				51511D4D27F8D58E0093D4B8 /* SignInViewController.swift in Sources */,
 				514BC71127FAD96E005D3CF7 /* LoginError.swift in Sources */,
+				516558C52828112B009E5D77 /* SpinerView.swift in Sources */,
 				5189E49128269CDB00A0CCBF /* NewsModel.swift in Sources */,
 				5189E488280C35AF00A0CCBF /* ProfileCoordinator.swift in Sources */,
+				511AA9DB28426CFE008C4678 /* SavedNewsModel.swift in Sources */,
 				514BC70027F9C0DF005D3CF7 /* TFLeftViewExt.swift in Sources */,
 				514BC70A27FACBC6005D3CF7 /* PasswordManager.swift in Sources */,
 				514BC72927FE0C7D005D3CF7 /* StackViewKinds.swift in Sources */,
+				511AA9D928426BBA008C4678 /* NewsPersistanceManager.swift in Sources */,
 				516558C32827D404009E5D77 /* DescriptionView.swift in Sources */,
 				51511D4F27F8D5CA0093D4B8 /* SignInInteractor.swift in Sources */,
 				514BC7422801AA32005D3CF7 /* ProfileInteractor.swift in Sources */,
@@ -309,6 +355,8 @@
 				51511D3327F8D4090093D4B8 /* AppDelegate.swift in Sources */,
 				514BC73327FE0E0A005D3CF7 /* SignUpPresentor.swift in Sources */,
 				514BC73E2801AA09005D3CF7 /* ProfileViewController.swift in Sources */,
+				519EE604283F9EF8006E9BA9 /* SavedNewsCell.swift in Sources */,
+				516558C72828419D009E5D77 /* WebViewController.swift in Sources */,
 				51511D5627F994A80093D4B8 /* SignInView.swift in Sources */,
 				514BC7402801AA24005D3CF7 /* ProfileView.swift in Sources */,
 				5189E48A281017B100A0CCBF /* AuthorizationCoordinator.swift in Sources */,

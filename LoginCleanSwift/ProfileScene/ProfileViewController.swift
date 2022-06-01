@@ -9,14 +9,13 @@ import UIKit
 
 protocol ProfileDisplayLogic {
     func displayArticles(_ article: ProfileModel.ArticleDataTransfer.ViewModel)
-}
-
-protocol ProfileViewOUTPUTDelegate: UITableViewDelegate, UITableViewDataSource {
- 
+    func noMoreNewsLeft()
 }
 
 protocol ProfileVCCoordinatorDelegate: AnyObject {
     func logout()
+    func showWebPage(_ urlString: String)
+    func showSavedNews()
 }
 
 class ProfileViewController: UIViewController {
@@ -33,26 +32,16 @@ class ProfileViewController: UIViewController {
     var articleModel: [ProfileModel.ArticleModel] = [] {
         didSet { profileView?.reloadTableView() }
     }
-
+    
     // MARK: - Life cycles
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUpNavigationBackButton()
+        setUpNavigationBarButtons()
         setupDependencies()
+        
         profileView?.onUserModelInput(userModel, self)
-        
-        
         interactor?.fetchTopNews()
-        
-        NewsService.fetchTopNews { result in
-            switch result {
-            case .success(let newsViewModel):
-                self.articleModel.append(newsViewModel)
-            case .failure(let error):
-                print(error)
-            }
-        }
     }
     
     // MARK: - Actions
@@ -60,10 +49,17 @@ class ProfileViewController: UIViewController {
         profileCoordinator?.logout()
     }
     
+    @objc func savedButtonTapped() {
+        profileCoordinator?.showSavedNews()
+    }
+    
     // MARK: - Methods
-    func setUpNavigationBackButton() {
-        let backButton = UIBarButtonItem(title: "Log out", style: .plain, target: self, action: #selector(backButtonTapped))
-        navigationItem.leftBarButtonItem = backButton
+    func setUpNavigationBarButtons() {
+        let leftButton = UIBarButtonItem(title: "Log out", style: .plain, target: self, action: #selector(backButtonTapped))
+        navigationItem.leftBarButtonItem = leftButton
+        
+        let rightButton = UIBarButtonItem(title: "Saved", style: .plain, target: self, action: #selector(savedButtonTapped))
+        navigationItem.rightBarButtonItem = rightButton
     }
     
     func setupDependencies() {
@@ -79,8 +75,8 @@ class ProfileViewController: UIViewController {
     }
 }
 
-
-extension ProfileViewController: ProfileViewOUTPUTDelegate {
+// MARK: - UITableViewDataSource & UITableViewDelegate
+extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 140
@@ -93,14 +89,41 @@ extension ProfileViewController: ProfileViewOUTPUTDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: NewsCell.identifier, for: indexPath) as! NewsCell
         cell.configureCell(with: articleModel[indexPath.row])
+        cell.selectionStyle = .none
         return cell
     }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if articleModel.count > 5 && indexPath.row == articleModel.count - 1 {
+            profileView?.isSpinnerShown = true
+            interactor?.fetchTopNews()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        profileCoordinator?.showWebPage(articleModel[indexPath.row].urlToNewsSource)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let articleIsSaved = articleModel[indexPath.row].isSaved
+        
+        let tralingSwipeButton = UIContextualAction.createTrailingSwipeButton(articleIsSaved) {
+            self.articleModel[indexPath.row].isSaved.toggle()
+        }
+        
+        let swipeConfiguration = UISwipeActionsConfiguration(actions: [tralingSwipeButton])
+        return swipeConfiguration
+    }
     
 }
-
+// MARK: - ProfileDisplayLogic
 extension ProfileViewController: ProfileDisplayLogic {
     func displayArticles(_ article: ProfileModel.ArticleDataTransfer.ViewModel) {
-        print("DEBUG THROUGH VIP cycle: \(article.articleModel)")
+        articleModel.append(article.articleModel)
+        self.profileView?.isSpinnerShown = false
+    }
+    func noMoreNewsLeft() {
+        print("DEBUG fetchTopNews ERROR case in ProfileViewController")
+        self.profileView?.isSpinnerShown = false
     }
 }

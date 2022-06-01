@@ -21,7 +21,8 @@ class ProfileInteractor: ProfileBusinessLogic {
             case .success(let articleModel):
                 self.presentor?.configureArticleModel(ProfileModel.ArticleDataTransfer.Response(articleModel: articleModel))
             case .failure(let error):
-                print("DEBUG ERROR ProfileInteractor: \(error)")
+                print("DEBUG fetchTopNews ERROR case in ProfileInteractor")
+                self.presentor?.noMoreNewsLeft()
             }
         }
     }

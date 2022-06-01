@@ -7,11 +7,20 @@
 
 import Foundation
 
+protocol ArticleDataProtocol {
+    var title: String? { get }
+    var description: String? { get }
+    var url: String? { get }
+    var urlToImage: String? { get }
+    var publishedAt: String? { get }
+    var content: String? { get }
+}
+
 struct NewsModel: Codable {
     let articles: [Article]
 }
 
-struct Article: Codable {
+struct Article: Codable & ArticleDataProtocol {
     let source: Source
     
     let title: String?

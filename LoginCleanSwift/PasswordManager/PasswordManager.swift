@@ -12,15 +12,14 @@ class PasswordManager {
     private var logged = false
     private var defaults = UserDefaults.standard
     
+    var isLoged: Bool { return logged }
+    var userLogin: String = ""
+    
     class var shared: PasswordManager {
         struct Static {
             static let instance = PasswordManager()
         }
         return Static.instance
-    }
-    
-    func isLoged() -> Bool {
-        return logged
     }
     
     func register(user: UserAuthData, completion: () -> ()) {
@@ -43,6 +42,7 @@ class PasswordManager {
             return
         }
         logged.toggle()
+        userLogin = request.login
         completion(.success(userModel))
     }
     

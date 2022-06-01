@@ -25,8 +25,16 @@ class ProfileView: UIView {
         self.newsTableView.delegate = profileVC
         self.newsTableView.dataSource = profileVC
     }
-
-    private weak var profileViewDelegate: ProfileViewOUTPUTDelegate?
+    
+    var isSpinnerShown: Bool = false {
+        didSet {
+            if isSpinnerShown {
+                spinerView.startAnimating()
+            } else {
+                spinerView.isHidden = true
+            }
+        }
+    }
     
     private let photoView: UIImageView = {
         let iv = UIImageView()
@@ -71,13 +79,20 @@ class ProfileView: UIView {
         label.text = "Number"
         return label
     }()
-     
+    
     lazy var newsTableView: UITableView = {
         let tableView = UITableView()
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
         tableView.register(NewsCell.self, forCellReuseIdentifier: NewsCell.identifier)
         return tableView
+    }()
+    
+    lazy var spinerView: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView(style: .large)
+        spinner.hidesWhenStopped = true
+        newsTableView.tableFooterView = spinner
+        return spinner
     }()
     
     // MARK: - Life cycle
@@ -129,20 +144,20 @@ class ProfileView: UIView {
         
         let nameStack = UIStackView(arrangedSubviews: [nameLabel])
         nameStack.axis = .vertical
-
+        
         let emailPhoneStack = UIStackView(arrangedSubviews: [emailStack, phoneStack])
         emailPhoneStack.axis = .vertical
         emailPhoneStack.alignment = .leading
         emailPhoneStack.distribution = .fill
         emailPhoneStack.spacing = 6
-
+        
         let infoStack = UIStackView(arrangedSubviews: [nameStack, emailPhoneStack])
         infoStack.spacing = 12
         infoStack.axis = .vertical
         infoStack.alignment = .leading
         infoStack.setContentHuggingPriority(.required, for: .horizontal)
         addSubViewsAndTamicOff([infoStack])
-
+        
         let userDataStack = UIStackView(arrangedSubviews: [photoView, infoStack])
         userDataStack.spacing = 12
         userDataStack.axis = .horizontal

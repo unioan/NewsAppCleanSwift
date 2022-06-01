@@ -80,6 +80,7 @@ class NewsCell: UITableViewCell {
     }
     
     private func setViews() {
+        selectionStyle = .none
         addSubViewsAndTamicOff([cardView])
         cardView.addSubViewsAndTamicOff([cellStack])
     }
