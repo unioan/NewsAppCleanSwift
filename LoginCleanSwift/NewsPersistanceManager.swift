@@ -7,24 +7,47 @@
 
 import Foundation
 
-struct NewsManager {
+class NewsPersistanceManager {
     
-    static let shared = NewsManager()
+    static let shared = NewsPersistanceManager()
+    private let manager = FileManager.default
+    private let encoder = JSONEncoder()
+    private let decoder = JSONDecoder()
+    
     private let login = PasswordManager.shared.userLogin
-    private lazy var url = URL(fileURLWithPath: login, relativeTo: FileManager.documentDirectoryURL)
+    private var savedArticlesDirectory: URL {
+        let url = FileManager.documentDirectoryURL.appendingPathComponent("savedArticles\(login)")
+        try? manager.createDirectory(at: url, withIntermediateDirectories: false, attributes: [:])
+        return url
+    }
     
     private init() {}
     
-    mutating func saveArticle(articleModel: ArticleDataProtocol) {
-        guard let articleData = try? JSONEncoder().encode(SavedNewsModel(login: login, articleModel: articleModel)) else { return }
-        try? articleData.write(to: url)
+    private func createSavedArticleFile(_ name: String, articleData: Data) {
+        let fileURL = savedArticlesDirectory.appendingPathComponent("\(name).json")
+        manager.createFile(atPath: fileURL.path, contents: articleData, attributes: [FileAttributeKey.creationDate: Date()])
     }
     
-    mutating func getSavedArticles(compleation: (ArticleDataProtocol) -> ()) {
-        guard let savedArticlesData = try? Data(contentsOf: url),
-              let savedArticlesModel = try? JSONDecoder().decode(SavedNewsModel.self, from: savedArticlesData)
-        else { return }
-        compleation(savedArticlesModel)
+    func saveArticle(articleModel: ArticleModelProtocol) {
+        guard let articleModel = articleModel as? ProfileModel.ArticleModel,
+              let articleData = try? encoder.encode(articleModel) else { return }
+        let fileName = articleModel.title.replacingOccurrences(of: " ", with: "")
+        createSavedArticleFile(fileName, articleData: articleData)
+    }
+    
+    func getSavedArticles(compleation: ([ArticleModelProtocol]) -> ()) {
+        guard let articlesNames = try? manager.contentsOfDirectory(atPath: savedArticlesDirectory.path) else { return }
+        let urlsToArticles = articlesNames.map { savedArticlesDirectory.appendingPathComponent($0) }
+        let articlesData = urlsToArticles.map { try? Data(contentsOf: $0) }
+        let articleOptionalModels = articlesData.map { try? decoder.decode(ProfileModel.ArticleModel.self, from: $0 ?? Data()) }
+        let articles = articleOptionalModels.compactMap { $0 }
+        compleation(articles)
+    }
+    
+    func removeArticleFromSaved(_ articleModel: ArticleModelProtocol) {
+        let articleName = articleModel.title.replacingOccurrences(of: " ", with: "")
+        let fileURL = savedArticlesDirectory.appendingPathComponent("\(articleName).json")
+        try? manager.removeItem(atPath: fileURL.path)
     }
     
 }

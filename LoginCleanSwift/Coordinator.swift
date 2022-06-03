@@ -7,10 +7,10 @@
 
 import UIKit
 
-protocol Coodrinator {
+@objc protocol Coodrinator {
     var childCoordinators: [Coodrinator] { get set }
     init(navigationController: UINavigationController)
-    func start()
+    @objc optional func start()
 }
 
 

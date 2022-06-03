@@ -7,14 +7,18 @@
 
 import UIKit
 
+enum ActionType {
+    case save, delete
+}
+
 extension UIContextualAction {
     
-    static func createTrailingSwipeButton(_ isSaved: Bool, completion: @escaping () -> ()) -> UIContextualAction {
+    static func createTrailingSwipeButton(_ article: ArticleModelProtocol, completion: @escaping (ActionType) -> ()) -> UIContextualAction {
         var tralingSwipeButton: UIContextualAction
         
-        if isSaved {
+        if article.isSaved {
             tralingSwipeButton = UIContextualAction(style: .normal, title: "Remove from saved") { action, view, completionHandler in
-                completion()
+                completion(.delete)
                 completionHandler(true)
             }
             tralingSwipeButton.image = UIImage(systemName: "trash.slash.fill")?.withTintColor(.white)
@@ -22,7 +26,7 @@ extension UIContextualAction {
             
         } else {
             tralingSwipeButton = UIContextualAction(style: .normal, title: "Save") { action, view, completionHandler in
-                completion()
+                completion(.save)
                 completionHandler(true)
             }
             tralingSwipeButton.image = UIImage(systemName: "square.and.arrow.down")?.withTintColor(.white)

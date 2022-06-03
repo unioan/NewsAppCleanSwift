@@ -10,12 +10,14 @@ import UIKit
 protocol ProfileDisplayLogic {
     func displayArticles(_ article: ProfileModel.ArticleDataTransfer.ViewModel)
     func noMoreNewsLeft()
+    func getSavedArticles()
+    func removeArticleFromeSavedArray(_ index: Int)
 }
 
 protocol ProfileVCCoordinatorDelegate: AnyObject {
     func logout()
     func showWebPage(_ urlString: String)
-    func showSavedNews()
+    func showSavedNews(_ savedArticles: [ArticleModelProtocol])
 }
 
 class ProfileViewController: UIViewController {
@@ -29,9 +31,11 @@ class ProfileViewController: UIViewController {
         didSet { profileView?.onUserModelInput(userModel, self) }
     }
     
-    var articleModel: [ProfileModel.ArticleModel] = [] {
+    var articleModel: [ArticleModelProtocol] = [] {
         didSet { profileView?.reloadTableView() }
     }
+    
+    var savedArticles: [ArticleModelProtocol] = []
     
     // MARK: - Life cycles
     override func viewDidLoad() {
@@ -44,13 +48,19 @@ class ProfileViewController: UIViewController {
         interactor?.fetchTopNews()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        getSavedArticles()
+    }
+    
     // MARK: - Actions
     @objc func backButtonTapped() {
         profileCoordinator?.logout()
+        NewsService.resetNewsService()
     }
     
     @objc func savedButtonTapped() {
-        profileCoordinator?.showSavedNews()
+        profileCoordinator?.showSavedNews(savedArticles)
     }
     
     // MARK: - Methods
@@ -73,6 +83,17 @@ class ProfileViewController: UIViewController {
         profileView = ProfileView()
         view = profileView
     }
+    
+    func getSavedArticles() {
+        NewsPersistanceManager.shared.getSavedArticles { savedArticles in
+            self.savedArticles = savedArticles
+        }
+    }
+    
+    func removeArticleFromeSavedArray(_ index: Int) {
+        savedArticles.remove(at: index)
+    }
+    
 }
 
 // MARK: - UITableViewDataSource & UITableViewDelegate
@@ -105,12 +126,19 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let articleIsSaved = articleModel[indexPath.row].isSaved
-        
-        let tralingSwipeButton = UIContextualAction.createTrailingSwipeButton(articleIsSaved) {
-            self.articleModel[indexPath.row].isSaved.toggle()
+        var articleTapped = articleModel[indexPath.row]
+        let savedArticle = savedArticles.first { $0.title == articleModel[indexPath.row].title }
+        if let _ = savedArticle { articleTapped.isSaved = true }
+
+        let tralingSwipeButton = UIContextualAction.createTrailingSwipeButton(articleTapped) { actionType in
+            switch actionType {
+            case .save:
+                self.interactor?.saveArticle(articleTapped)
+            case .delete:
+                self.interactor?.removeArticle(savedArticle, from: self.savedArticles)
+            }
         }
-        
+
         let swipeConfiguration = UISwipeActionsConfiguration(actions: [tralingSwipeButton])
         return swipeConfiguration
     }
@@ -120,7 +148,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
 extension ProfileViewController: ProfileDisplayLogic {
     func displayArticles(_ article: ProfileModel.ArticleDataTransfer.ViewModel) {
         articleModel.append(article.articleModel)
-        self.profileView?.isSpinnerShown = false
+        self.profileView?.isSpinnerShown = true
     }
     func noMoreNewsLeft() {
         print("DEBUG fetchTopNews ERROR case in ProfileViewController")

@@ -7,21 +7,29 @@
 
 import Foundation
 
+protocol ArticleModelProtocol: Codable {
+    var title: String { get }
+    var description: String { get }
+    var urlToNewsSource: String { get }
+    var imageData: Data { get }
+    var isSaved: Bool { get set }
+}
+
 enum ProfileModel {
     
     enum ArticleDataTransfer {
         struct Request {}
         
         struct Response {
-            let articleModel: ProfileModel.ArticleModel
+            let articleModel: ArticleModelProtocol
         }
         
         struct ViewModel {
-            let articleModel: ProfileModel.ArticleModel
+            let articleModel: ArticleModelProtocol
         }
     }
     
-    struct ArticleModel {
+    struct ArticleModel: ArticleModelProtocol {
         let title: String
         let description: String
         let urlToNewsSource: String

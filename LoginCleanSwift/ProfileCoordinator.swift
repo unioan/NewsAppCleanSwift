@@ -45,15 +45,24 @@ extension ProfileCoordinator: ProfileVCCoordinatorDelegate {
         navigationController.pushViewController(webVC, animated: true)
     }
     
-    func showSavedNews() {
-        let vc = SavedNewsTableViewController()
-        navigationController.pushViewController(vc, animated: true)
+    func showSavedNews(_ savedArticles: [ArticleModelProtocol]) {
+        let savedArticlesCoordinator = SavedArticlesCoordinator(navigationController: navigationController)
+        childCoordinators.append(savedArticlesCoordinator)
+        savedArticlesCoordinator.delegate = self
+        savedArticlesCoordinator.start(savedArticles)
+        print("DEBUG: ProfileCoordinator childCoordinators: \(childCoordinators)")
     }
     
     func logout() {
         delegate?.navigateToAuthorizationScene()
     }
     
-    
-    
+}
+
+extension ProfileCoordinator: BackToProfileCoordinatorProtocol {
+    func navigateBackToProfileCoordinator() {
+        navigationController.popViewController(animated: true)
+        childCoordinators.removeLast()
+        print("DEBUG: ProfileCoordinator childCoordinators: \(childCoordinators)")
+    }
 }

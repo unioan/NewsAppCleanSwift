@@ -63,5 +63,9 @@ struct NewsService {
         }
     }
     
+    static func resetNewsService() {
+        print("DEBUG resetNewsService WORKED!!!")
+        pageNumber = 0
+    }
     
 }

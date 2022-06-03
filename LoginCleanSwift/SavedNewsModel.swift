@@ -7,27 +7,17 @@
 
 import Foundation
 
-protocol SaveArticleProtocol: ArticleDataProtocol {
+protocol SaveArticleProtocol: Codable {
     var login: String { get }
 }
 
-struct SavedNewsModel: Codable & SaveArticleProtocol {
+struct SavedNewsModel: Codable {
     var login: String
-    var title: String?
-    var description: String?
-    var url: String?
-    var urlToImage: String?
-    var publishedAt: String?
-    var content: String?
+    var article: ProfileModel.ArticleModel
     
-    init(login: String, articleModel: ArticleDataProtocol) {
+    init(login: String, articleModel: ProfileModel.ArticleModel) {
         self.login = login
-        self.title = articleModel.title
-        self.description = articleModel.description
-        self.url = articleModel.url
-        self.urlToImage = articleModel.urlToImage
-        self.publishedAt = articleModel.publishedAt
-        self.content = articleModel.content
+        self.article = articleModel
     }
     
 }

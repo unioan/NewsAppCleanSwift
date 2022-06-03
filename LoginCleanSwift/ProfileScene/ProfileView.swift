@@ -179,8 +179,8 @@ class ProfileView: UIView {
                                      phoneIcon.widthAnchor.constraint(equalToConstant: 20)])
         
         NSLayoutConstraint.activate([newsTableView.topAnchor.constraint(equalTo: userDataStack.bottomAnchor, constant: 15),
-                                     newsTableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-                                     newsTableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+                                     newsTableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+                                     newsTableView.trailingAnchor.constraint(equalTo: trailingAnchor),
                                      newsTableView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15)])
     }
     

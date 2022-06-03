@@ -73,7 +73,7 @@ class NewsCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCell(with articleModel: ProfileModel.ArticleModel) {
+    func configureCell(with articleModel: ArticleModelProtocol) {
         newsImageView.image = UIImage(data: articleModel.imageData)
         newsTitleLabel.text = articleModel.title
         newsDescriptionView.descriptionLabel.text = articleModel.description
@@ -88,8 +88,8 @@ class NewsCell: UITableViewCell {
     private func setConstrains() {
         
         NSLayoutConstraint.activate([cardView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-                                     cardView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                                     cardView.trailingAnchor.constraint(equalTo: trailingAnchor),
+                                     cardView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+                                     cardView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
                                      cardView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5)])
         
         NSLayoutConstraint.activate([newsImageView.heightAnchor.constraint(equalToConstant: 110),
