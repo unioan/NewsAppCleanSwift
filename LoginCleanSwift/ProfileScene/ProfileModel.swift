@@ -13,6 +13,7 @@ protocol ArticleModelProtocol: Codable {
     var urlToNewsSource: String { get }
     var imageData: Data { get }
     var isSaved: Bool { get set }
+    var dateOfSave: Date? { get set }
 }
 
 enum ProfileModel {
@@ -35,6 +36,7 @@ enum ProfileModel {
         let urlToNewsSource: String
         let imageData: Data
         var isSaved: Bool = false
+        var dateOfSave: Date?
         
         init() {
             title = ""

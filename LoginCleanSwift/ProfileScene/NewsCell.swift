@@ -77,6 +77,13 @@ class NewsCell: UITableViewCell {
         newsImageView.image = UIImage(data: articleModel.imageData)
         newsTitleLabel.text = articleModel.title
         newsDescriptionView.descriptionLabel.text = articleModel.description
+        if articleModel.isSaved {
+            chevronImageView.image = UIImage(systemName: "star.fill")
+            chevronImageView.tintColor = .systemOrange
+        } else {
+            chevronImageView.image = UIImage(systemName: "chevron.forward")
+            chevronImageView.tintColor = .systemBlue
+        }
     }
     
     private func setViews() {

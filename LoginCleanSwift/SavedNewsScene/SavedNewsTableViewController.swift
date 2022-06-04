@@ -15,7 +15,12 @@ protocol SavedNewsTableVCCoordinatorDelegate: AnyObject {
 class SavedNewsTableViewController: UITableViewController {
     
     // MARK: - Properties
-    var savedArticles = [ArticleModelProtocol]()
+    var savedArticles = [ArticleModelProtocol]() {
+        didSet {
+            savedArticles.sort { $0.dateOfSave! > $1.dateOfSave! }
+            tableView.reloadData()
+        }
+    }
     weak var savedCoordinator: SavedNewsTableVCCoordinatorDelegate?
     
     // MARK: - Life Cycle
@@ -30,7 +35,6 @@ class SavedNewsTableViewController: UITableViewController {
     
     // MARK: - Actions
     @objc func navigateToProfileVC() {
-        print("DEBUG: SavedNewsTableViewController / navigateToProfileVC method")
         savedCoordinator?.navigateBackToProfileCoordinator()
     }
     

@@ -8,6 +8,7 @@
 import Foundation
 
 protocol ProfileBusinessLogic {
+    func setUpNavigationBarButtons()
     func fetchTopNews()
     func saveArticle(_ article: ArticleModelProtocol)
     func removeArticle(_ article: ArticleModelProtocol?, from savedArticles: [ArticleModelProtocol])
@@ -17,14 +18,16 @@ class ProfileInteractor: ProfileBusinessLogic {
     
     var presentor: ProfilePresentationLogic?
     
+    func setUpNavigationBarButtons() {
+        presentor?.setUpNavigationBarButtons()
+    }
+    
     func fetchTopNews() {
         NewsService.fetchTopNews { result in
             switch result {
             case .success(let articleModel):
                 self.presentor?.configureArticleModel(ProfileModel.ArticleDataTransfer.Response(articleModel: articleModel))
-                print("DEBUG fetchTopNews worked")
             case .failure(_):
-                print("DEBUG fetchTopNews ERROR case in ProfileInteractor")
                 self.presentor?.noMoreNewsLeft()
             }
         }
@@ -33,7 +36,6 @@ class ProfileInteractor: ProfileBusinessLogic {
     func saveArticle(_ article: ArticleModelProtocol) {
         NewsPersistanceManager.shared.saveArticle(articleModel: article)
         presentor?.displaySaved()
-        print("DEBUG saveArticle from ProfileInteractor WORKED!")
     }
     
     func removeArticle(_ article: ArticleModelProtocol?, from savedArticles: [ArticleModelProtocol]) {

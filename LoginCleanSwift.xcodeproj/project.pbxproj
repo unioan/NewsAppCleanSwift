@@ -13,6 +13,7 @@
 		511AA9DD28466A6E008C4678 /* ContextualActionExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511AA9DC28466A6E008C4678 /* ContextualActionExt.swift */; };
 		513A25962848E52900129968 /* StringExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513A25952848E52900129968 /* StringExt.swift */; };
 		513A2598284A27CB00129968 /* SavedArticlesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513A2597284A27CB00129968 /* SavedArticlesCoordinator.swift */; };
+		513A259A284A697B00129968 /* ArrayExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513A2599284A697B00129968 /* ArrayExt.swift */; };
 		514BC70027F9C0DF005D3CF7 /* TFLeftViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514BC6FF27F9C0DF005D3CF7 /* TFLeftViewExt.swift */; };
 		514BC70A27FACBC6005D3CF7 /* PasswordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514BC70927FACBC6005D3CF7 /* PasswordManager.swift */; };
 		514BC70E27FAD468005D3CF7 /* UserAuthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514BC70D27FAD468005D3CF7 /* UserAuthData.swift */; };
@@ -60,6 +61,7 @@
 		511AA9DC28466A6E008C4678 /* ContextualActionExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextualActionExt.swift; sourceTree = "<group>"; };
 		513A25952848E52900129968 /* StringExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExt.swift; sourceTree = "<group>"; };
 		513A2597284A27CB00129968 /* SavedArticlesCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedArticlesCoordinator.swift; sourceTree = "<group>"; };
+		513A2599284A697B00129968 /* ArrayExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExt.swift; sourceTree = "<group>"; };
 		514BC6FF27F9C0DF005D3CF7 /* TFLeftViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLeftViewExt.swift; sourceTree = "<group>"; };
 		514BC70927FACBC6005D3CF7 /* PasswordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordManager.swift; sourceTree = "<group>"; };
 		514BC70D27FAD468005D3CF7 /* UserAuthData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuthData.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				511AA9D22840ECAA008C4678 /* FileManagerExt.swift */,
 				511AA9DC28466A6E008C4678 /* ContextualActionExt.swift */,
 				513A25952848E52900129968 /* StringExt.swift */,
+				513A2599284A697B00129968 /* ArrayExt.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -329,6 +332,7 @@
 				514BC72F27FE0DCC005D3CF7 /* SignUpView.swift in Sources */,
 				514BC7442801AA66005D3CF7 /* ProfilePresenter.swift in Sources */,
 				514BC73127FE0DE1005D3CF7 /* SignUpInteractor.swift in Sources */,
+				513A259A284A697B00129968 /* ArrayExt.swift in Sources */,
 				511AA9D32840ECAA008C4678 /* FileManagerExt.swift in Sources */,
 				513A25962848E52900129968 /* StringExt.swift in Sources */,
 				5189E48C28250DB500A0CCBF /* NewsCell.swift in Sources */,

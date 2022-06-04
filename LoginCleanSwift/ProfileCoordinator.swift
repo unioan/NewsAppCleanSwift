@@ -50,7 +50,6 @@ extension ProfileCoordinator: ProfileVCCoordinatorDelegate {
         childCoordinators.append(savedArticlesCoordinator)
         savedArticlesCoordinator.delegate = self
         savedArticlesCoordinator.start(savedArticles)
-        print("DEBUG: ProfileCoordinator childCoordinators: \(childCoordinators)")
     }
     
     func logout() {
@@ -63,6 +62,5 @@ extension ProfileCoordinator: BackToProfileCoordinatorProtocol {
     func navigateBackToProfileCoordinator() {
         navigationController.popViewController(animated: true)
         childCoordinators.removeLast()
-        print("DEBUG: ProfileCoordinator childCoordinators: \(childCoordinators)")
     }
 }

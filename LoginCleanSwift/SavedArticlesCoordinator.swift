@@ -22,10 +22,6 @@ class SavedArticlesCoordinator: Coodrinator {
         self.navigationController = navigationController
     }
     
-    deinit {
-        print("DEBUG: SavedArticlesCoordinator has been dealocated")
-    }
-    
     func start(_ savedArticles: [ArticleModelProtocol]) {
         let savedArticlesVC = SavedNewsTableViewController()
         savedArticlesVC.savedCoordinator = self
@@ -37,7 +33,6 @@ class SavedArticlesCoordinator: Coodrinator {
 
 extension SavedArticlesCoordinator: SavedNewsTableVCCoordinatorDelegate {
     func navigateBackToProfileCoordinator() {
-        print("DEBUG: SavedArticlesCoordinator navigateBackToProfileCoordinator method")
         delegate?.navigateBackToProfileCoordinator()
     }
     

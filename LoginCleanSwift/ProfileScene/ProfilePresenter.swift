@@ -12,24 +12,27 @@ protocol ProfilePresentationLogic {
     func noMoreNewsLeft()
     func displaySaved()
     func displaySavedAfterRemovingArticle(_ index: Int)
+    func setUpNavigationBarButtons()
 }
 
 class ProfilePresenter: ProfilePresentationLogic {
     
     var viewController: ProfileDisplayLogic?
     
+    func setUpNavigationBarButtons() {
+        
+    }
+    
     func configureArticleModel(_ article: ProfileModel.ArticleDataTransfer.Response) {
         viewController?.displayArticles(ProfileModel.ArticleDataTransfer.ViewModel(articleModel: article.articleModel))
     }
     
     func noMoreNewsLeft() {
-        print("DEBUG fetchTopNews ERROR case in ProfilePresenter")
         viewController?.noMoreNewsLeft()
     }
     
     func displaySaved() {
         viewController?.getSavedArticles()
-        print("DEBUG displaySaved from ProfilePresenter WORKED!")
     }
     
     func displaySavedAfterRemovingArticle(_ index: Int) {

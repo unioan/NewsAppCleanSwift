@@ -31,11 +31,16 @@ class ProfileViewController: UIViewController {
         didSet { profileView?.onUserModelInput(userModel, self) }
     }
     
-    var articleModel: [ArticleModelProtocol] = [] {
-        didSet { profileView?.reloadTableView() }
+    var articleModels: [ArticleModelProtocol] = [] {
+        didSet {
+            savedArticles.markAsSaved(in: &articleModels)
+            profileView?.reloadTableView()
+        }
     }
     
-    var savedArticles: [ArticleModelProtocol] = []
+    var savedArticles: [ArticleModelProtocol] = [] {
+        didSet { savedArticles.markAsSaved(in: &articleModels) }
+    }
     
     // MARK: - Life cycles
     override func viewDidLoad() {
@@ -91,7 +96,16 @@ class ProfileViewController: UIViewController {
     }
     
     func removeArticleFromeSavedArray(_ index: Int) {
+        markArticleAsNotSaved(index)
         savedArticles.remove(at: index)
+    }
+    
+    func markArticleAsNotSaved(_ index: Int) {
+        let savedArticle = savedArticles[index]
+        let indexInArticleModels = articleModels.firstIndex { $0.title == savedArticle.title }
+        if let indexInArticleModels = indexInArticleModels {
+            articleModels[indexInArticleModels].isSaved = false
+        }
     }
     
 }
@@ -104,38 +118,39 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return articleModel.count
+        return articleModels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: NewsCell.identifier, for: indexPath) as! NewsCell
-        cell.configureCell(with: articleModel[indexPath.row])
+        cell.configureCell(with: articleModels[indexPath.row])
         cell.selectionStyle = .none
         return cell
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if articleModel.count > 5 && indexPath.row == articleModel.count - 1 {
+        if articleModels.count > 5 && indexPath.row == articleModels.count - 1 {
             profileView?.isSpinnerShown = true
             interactor?.fetchTopNews()
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        profileCoordinator?.showWebPage(articleModel[indexPath.row].urlToNewsSource)
+        profileCoordinator?.showWebPage(articleModels[indexPath.row].urlToNewsSource)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        var articleTapped = articleModel[indexPath.row]
-        let savedArticle = savedArticles.first { $0.title == articleModel[indexPath.row].title }
-        if let _ = savedArticle { articleTapped.isSaved = true }
+        var articleTapped = articleModels[indexPath.row]
+//        let savedArticle = savedArticles.first { $0.title == articleModels[indexPath.row].title }
+//        if let _ = savedArticle { articleTapped.isSaved = true }
 
         let tralingSwipeButton = UIContextualAction.createTrailingSwipeButton(articleTapped) { actionType in
             switch actionType {
             case .save:
+                articleTapped.dateOfSave = Date()
                 self.interactor?.saveArticle(articleTapped)
             case .delete:
-                self.interactor?.removeArticle(savedArticle, from: self.savedArticles)
+                self.interactor?.removeArticle(articleTapped, from: self.savedArticles)
             }
         }
 
@@ -147,11 +162,10 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
 // MARK: - ProfileDisplayLogic
 extension ProfileViewController: ProfileDisplayLogic {
     func displayArticles(_ article: ProfileModel.ArticleDataTransfer.ViewModel) {
-        articleModel.append(article.articleModel)
+        articleModels.append(article.articleModel)
         self.profileView?.isSpinnerShown = true
     }
     func noMoreNewsLeft() {
-        print("DEBUG fetchTopNews ERROR case in ProfileViewController")
         self.profileView?.isSpinnerShown = false
     }
 }

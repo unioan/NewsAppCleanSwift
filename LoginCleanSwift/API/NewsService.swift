@@ -17,7 +17,8 @@ struct NewsService {
     private static let decoder = JSONDecoder()
     private static let link = "https://newsapi.org/v2/top-headlines?country=gb&page="
     private static var pageNumber = 0
-    private static let apiKey = "&apiKey=3e3d22e0bfc946688a532dc76535414b"
+    private static let apiKey = "&apiKey=9497dbb41ea348d7932167d98fbd4c9b"
+    // API keys: 9497dbb41ea348d7932167d98fbd4c9b 3e3d22e0bfc946688a532dc76535414b
     
     private static func fetchImage(with urlToImage: String, completion: @escaping (Data) -> Void) {
         guard let url = URL(string: urlToImage) else { return }
@@ -47,6 +48,7 @@ struct NewsService {
     
     static func fetchTopNews(compleation: @escaping (Result<ProfileModel.ArticleModel, FetchError>) -> Void) {
         fetchTopNewsModels { articles in
+            print("DEBUG: articles are comming \(articles)")
             guard articles.count > 0 else {
                 DispatchQueue.main.async {
                     compleation(.failure(.NoTopNewsLeft))
@@ -64,7 +66,6 @@ struct NewsService {
     }
     
     static func resetNewsService() {
-        print("DEBUG resetNewsService WORKED!!!")
         pageNumber = 0
     }
     
