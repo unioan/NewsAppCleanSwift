@@ -80,9 +80,16 @@ class ProfileView: UIView {
         return label
     }()
     
+    lazy var headerView: UIView = {
+        let hv = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 90))
+        hv.backgroundColor = .systemRed
+        return hv
+    }()
+    
     lazy var newsTableView: UITableView = {
         let tableView = UITableView()
         tableView.separatorStyle = .none
+        tableView.tableHeaderView = headerView
         tableView.showsVerticalScrollIndicator = false
         tableView.register(NewsCell.self, forCellReuseIdentifier: NewsCell.identifier)
         return tableView

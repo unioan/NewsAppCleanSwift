@@ -8,6 +8,7 @@
 import UIKit
 
 protocol ProfileDisplayLogic {
+    var profileView: ProfileView? { get set }
     func displayArticles(_ article: ProfileModel.ArticleDataTransfer.ViewModel)
     func noMoreNewsLeft()
     func getSavedArticles()
@@ -45,9 +46,8 @@ class ProfileViewController: UIViewController {
     // MARK: - Life cycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setUpNavigationBarButtons()
         setupDependencies()
+        interactor?.setUpNavigationBarButtons()
         
         profileView?.onUserModelInput(userModel, self)
         interactor?.fetchTopNews()
@@ -69,13 +69,6 @@ class ProfileViewController: UIViewController {
     }
     
     // MARK: - Methods
-    func setUpNavigationBarButtons() {
-        let leftButton = UIBarButtonItem(title: "Log out", style: .plain, target: self, action: #selector(backButtonTapped))
-        navigationItem.leftBarButtonItem = leftButton
-        
-        let rightButton = UIBarButtonItem(title: "Saved", style: .plain, target: self, action: #selector(savedButtonTapped))
-        navigationItem.rightBarButtonItem = rightButton
-    }
     
     func setupDependencies() {
         let interactor = ProfileInteractor()
@@ -107,7 +100,7 @@ class ProfileViewController: UIViewController {
             articleModels[indexInArticleModels].isSaved = false
         }
     }
-    
+
 }
 
 // MARK: - UITableViewDataSource & UITableViewDelegate
@@ -141,8 +134,6 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         var articleTapped = articleModels[indexPath.row]
-//        let savedArticle = savedArticles.first { $0.title == articleModels[indexPath.row].title }
-//        if let _ = savedArticle { articleTapped.isSaved = true }
 
         let tralingSwipeButton = UIContextualAction.createTrailingSwipeButton(articleTapped) { actionType in
             switch actionType {
@@ -156,6 +147,10 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
 
         let swipeConfiguration = UISwipeActionsConfiguration(actions: [tralingSwipeButton])
         return swipeConfiguration
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        interactor?.animateNewsTableViewHeader(scrollView.bounds.origin.y)
     }
     
 }

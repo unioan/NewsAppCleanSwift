@@ -12,6 +12,7 @@ protocol ProfileBusinessLogic {
     func fetchTopNews()
     func saveArticle(_ article: ArticleModelProtocol)
     func removeArticle(_ article: ArticleModelProtocol?, from savedArticles: [ArticleModelProtocol])
+    func animateNewsTableViewHeader(_ scrollPosition: Double)
 }
 
 class ProfileInteractor: ProfileBusinessLogic {
@@ -44,6 +45,10 @@ class ProfileInteractor: ProfileBusinessLogic {
         let indexForRemoving = savedArticles.firstIndex { $0.title == article.title }
         guard let index = indexForRemoving else { return }
         presentor?.displaySavedAfterRemovingArticle(index)
+    }
+    
+    func animateNewsTableViewHeader(_ scrollPosition: Double) {
+        presentor?.animateNewsTableViewHeader(scrollPosition)
     }
     
 }

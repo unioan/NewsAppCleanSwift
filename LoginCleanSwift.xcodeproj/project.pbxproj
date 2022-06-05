@@ -14,6 +14,7 @@
 		513A25962848E52900129968 /* StringExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513A25952848E52900129968 /* StringExt.swift */; };
 		513A2598284A27CB00129968 /* SavedArticlesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513A2597284A27CB00129968 /* SavedArticlesCoordinator.swift */; };
 		513A259A284A697B00129968 /* ArrayExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513A2599284A697B00129968 /* ArrayExt.swift */; };
+		513A259C284CD46600129968 /* SearchCategoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513A259B284CD46500129968 /* SearchCategoryHeaderView.swift */; };
 		514BC70027F9C0DF005D3CF7 /* TFLeftViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514BC6FF27F9C0DF005D3CF7 /* TFLeftViewExt.swift */; };
 		514BC70A27FACBC6005D3CF7 /* PasswordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514BC70927FACBC6005D3CF7 /* PasswordManager.swift */; };
 		514BC70E27FAD468005D3CF7 /* UserAuthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514BC70D27FAD468005D3CF7 /* UserAuthData.swift */; };
@@ -62,6 +63,7 @@
 		513A25952848E52900129968 /* StringExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExt.swift; sourceTree = "<group>"; };
 		513A2597284A27CB00129968 /* SavedArticlesCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedArticlesCoordinator.swift; sourceTree = "<group>"; };
 		513A2599284A697B00129968 /* ArrayExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExt.swift; sourceTree = "<group>"; };
+		513A259B284CD46500129968 /* SearchCategoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCategoryHeaderView.swift; sourceTree = "<group>"; };
 		514BC6FF27F9C0DF005D3CF7 /* TFLeftViewExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFLeftViewExt.swift; sourceTree = "<group>"; };
 		514BC70927FACBC6005D3CF7 /* PasswordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordManager.swift; sourceTree = "<group>"; };
 		514BC70D27FAD468005D3CF7 /* UserAuthData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuthData.swift; sourceTree = "<group>"; };
@@ -124,6 +126,14 @@
 			name = PersistanceManager;
 			sourceTree = "<group>";
 		};
+		513A259D284CD48400129968 /* SearchCategoryHeader */ = {
+			isa = PBXGroup;
+			children = (
+				513A259B284CD46500129968 /* SearchCategoryHeaderView.swift */,
+			);
+			path = SearchCategoryHeader;
+			sourceTree = "<group>";
+		};
 		514BC6FC27F9BEBD005D3CF7 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -174,6 +184,7 @@
 		514BC73C2801A9BE005D3CF7 /* ProfileScene */ = {
 			isa = PBXGroup;
 			children = (
+				513A259D284CD48400129968 /* SearchCategoryHeader */,
 				5189E48B28250DB400A0CCBF /* NewsCell.swift */,
 				514BC73F2801AA24005D3CF7 /* ProfileView.swift */,
 				514BC73D2801AA09005D3CF7 /* ProfileViewController.swift */,
@@ -347,6 +358,7 @@
 				5189E488280C35AF00A0CCBF /* ProfileCoordinator.swift in Sources */,
 				511AA9DB28426CFE008C4678 /* SavedNewsModel.swift in Sources */,
 				514BC70027F9C0DF005D3CF7 /* TFLeftViewExt.swift in Sources */,
+				513A259C284CD46600129968 /* SearchCategoryHeaderView.swift in Sources */,
 				514BC70A27FACBC6005D3CF7 /* PasswordManager.swift in Sources */,
 				514BC72927FE0C7D005D3CF7 /* StackViewKinds.swift in Sources */,
 				511AA9D928426BBA008C4678 /* NewsPersistanceManager.swift in Sources */,
