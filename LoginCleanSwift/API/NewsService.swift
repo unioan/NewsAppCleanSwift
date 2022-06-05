@@ -48,7 +48,7 @@ struct NewsService {
     
     static func fetchTopNews(compleation: @escaping (Result<ProfileModel.ArticleModel, FetchError>) -> Void) {
         fetchTopNewsModels { articles in
-            print("DEBUG: articles are comming \(articles)")
+            //print("DEBUG: articles are comming \(articles)")
             guard articles.count > 0 else {
                 DispatchQueue.main.async {
                     compleation(.failure(.NoTopNewsLeft))

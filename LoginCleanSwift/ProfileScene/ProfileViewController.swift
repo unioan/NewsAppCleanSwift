@@ -154,6 +154,37 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
 }
+
+extension ProfileViewController: UICollectionViewDelegate & UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        SearchCategoryHeaderType.allCases.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let sectionKind = SearchCategoryHeaderType(rawValue: section) else { fatalError() }
+        switch sectionKind {
+        case .searchCategory:
+            return 6
+        case .searchBar:
+            return 1
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let sectionKind = SearchCategoryHeaderType(rawValue: indexPath.section) else { fatalError() }
+        switch sectionKind {
+        case .searchCategory:
+            let searchCategory = collectionView.dequeueReusableCell(withReuseIdentifier: SearchArticlesCategoryCell.identifier, for: indexPath)
+            return searchCategory
+        case .searchBar:
+            let searchBar = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCategoryBarCell.identifier, for: indexPath)
+            return searchBar
+        }
+    }
+    
+}
+
 // MARK: - ProfileDisplayLogic
 extension ProfileViewController: ProfileDisplayLogic {
     func displayArticles(_ article: ProfileModel.ArticleDataTransfer.ViewModel) {

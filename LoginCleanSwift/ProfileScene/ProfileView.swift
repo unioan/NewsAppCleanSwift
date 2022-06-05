@@ -24,6 +24,9 @@ class ProfileView: UIView {
         
         self.newsTableView.delegate = profileVC
         self.newsTableView.dataSource = profileVC
+        
+        self.headerView.delegate = profileVc
+        self.headerView.dataSource = profileVc
     }
     
     var isSpinnerShown: Bool = false {
@@ -80,10 +83,9 @@ class ProfileView: UIView {
         return label
     }()
     
-    lazy var headerView: UIView = {
-        let hv = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 90))
-        hv.backgroundColor = .systemRed
-        return hv
+    lazy var headerView: SearchCategoryHeaderView = {
+        let header = SearchCategoryHeaderView()
+        return header
     }()
     
     lazy var newsTableView: UITableView = {

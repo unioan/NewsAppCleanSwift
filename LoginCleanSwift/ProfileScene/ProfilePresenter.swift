@@ -55,7 +55,8 @@ class ProfilePresenter: ProfilePresentationLogic {
         if scrollPosition < -0.1 && headerType == .hidden {
             viewController?.profileView?.newsTableView.contentInset = UIEdgeInsets(top: -(viewController?.profileView?.headerView.bounds.height)!, left: 0, bottom: 0, right: 0)
             headerType = .shown
-        } else if scrollPosition < -40 && headerType == .shown {
+                               // -40 / -20
+        } else if scrollPosition < 0 && headerType == .shown {
             UIView.animate(withDuration: TimeInterval.init(floatLiteral: 0.5), delay: .zero, options: .curveLinear) {
                 self.viewController?.profileView?.newsTableView.contentInset = UIEdgeInsets.zero
             } completion: { _ in self.headerType = .aboutToHide }
