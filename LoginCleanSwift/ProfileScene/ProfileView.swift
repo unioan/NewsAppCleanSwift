@@ -122,6 +122,10 @@ class ProfileView: UIView {
         newsTableView.reloadData()
     }
     
+    func reloadCollectionView() {
+        headerView.reloadData()
+    }
+    
     private func setupStacks(_ kind: ProfileViewStack) -> UIStackView {
         switch kind {
         case .emailLine:

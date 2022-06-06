@@ -43,6 +43,10 @@ class ProfileViewController: UIViewController {
         didSet { savedArticles.markAsSaved(in: &articleModels) }
     }
     
+    var selectedCategory: SearchArticlesCategoryType = .general {
+        didSet { profileView?.reloadCollectionView() }
+    }
+    
     // MARK: - Life cycles
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,7 +158,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
 }
-
+// MARK: - UICollectionViewDataSource & UICollectionViewDelegate
 extension ProfileViewController: UICollectionViewDelegate & UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -165,7 +169,7 @@ extension ProfileViewController: UICollectionViewDelegate & UICollectionViewData
         guard let sectionKind = SearchCategoryHeaderType(rawValue: section) else { fatalError() }
         switch sectionKind {
         case .searchCategory:
-            return 6
+            return SearchArticlesCategoryType.allCases.count
         case .searchBar:
             return 1
         }
@@ -175,14 +179,41 @@ extension ProfileViewController: UICollectionViewDelegate & UICollectionViewData
         guard let sectionKind = SearchCategoryHeaderType(rawValue: indexPath.section) else { fatalError() }
         switch sectionKind {
         case .searchCategory:
-            let searchCategory = collectionView.dequeueReusableCell(withReuseIdentifier: SearchArticlesCategoryCell.identifier, for: indexPath)
-            return searchCategory
+            guard let categoryType = SearchArticlesCategoryType.init(rawValue: indexPath.item),
+                  let categoryCell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchArticlesCategoryCell.identifier, for: indexPath) as? SearchArticlesCategoryCell else { fatalError() }
+            categoryType == selectedCategory ? categoryCell.selectedAppearence(true) : categoryCell.selectedAppearence(false)
+            categoryCell.configureCell(categoryType.cellText)
+            return categoryCell
         case .searchBar:
-            let searchBar = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCategoryBarCell.identifier, for: indexPath)
-            return searchBar
+            guard let searchBarCell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCategoryBarCell.identifier, for: indexPath) as? SearchCategoryBarCell else { fatalError() }
+            searchBarCell.searchBar.delegate = self
+            if selectedCategory == .general {
+                searchBarCell.searchBar.searchTextField.isEnabled = false
+                searchBarCell.searchBar.searchTextField.text = ""
+            } else {
+                searchBarCell.searchBar.searchTextField.isEnabled = true
+            }
+            return searchBarCell
         }
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.section == 0 {
+            guard let selectedCategory = SearchArticlesCategoryType(rawValue: indexPath.item) else { return }
+            self.selectedCategory = selectedCategory
+            if selectedCategory == .general {
+                interactor?.fetchTopNews()
+            }
+        }
+    }
+    
+}
+
+extension ProfileViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let text = searchBar.text, text != " ", selectedCategory != .general else { return }
+        print("DEBUG:: text \(searchBar.text?.lowercased()) has been entered")
+    }
 }
 
 // MARK: - ProfileDisplayLogic

@@ -49,16 +49,14 @@ struct NewsService {
     static func fetchTopNews(compleation: @escaping (Result<ProfileModel.ArticleModel, FetchError>) -> Void) {
         fetchTopNewsModels { articles in
             //print("DEBUG: articles are comming \(articles)")
+            print("NEWS ARE FETCHED AFTER PRESSING GENERAL BUTTON \(articles.count)")
             guard articles.count > 0 else {
-                DispatchQueue.main.async {
-                    compleation(.failure(.NoTopNewsLeft))
-                }
+                DispatchQueue.main.async { compleation(.failure(.NoTopNewsLeft)) }
                 return
             }
             articles.forEach { article in
                 fetchImage(with: article.urlToImage!) { imageData in
-                    DispatchQueue.main.async {
-                        compleation(.success(ProfileModel.ArticleModel(article: article, imageData: imageData)))
+                    DispatchQueue.main.async { compleation(.success(ProfileModel.ArticleModel(article: article, imageData: imageData)))
                     }
                 }
             }
