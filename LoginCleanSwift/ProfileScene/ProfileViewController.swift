@@ -44,7 +44,11 @@ class ProfileViewController: UIViewController {
     }
     
     var selectedCategory: SearchArticlesCategoryType = .general {
-        didSet { profileView?.reloadCollectionView() }
+        didSet {
+            articleModels.removeAll()
+            interactor?.fetchTopNews(selectedCategory: selectedCategory)
+            profileView?.reloadCollectionView()
+        }
     }
     
     // MARK: - Life cycles
@@ -128,7 +132,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if articleModels.count > 5 && indexPath.row == articleModels.count - 1 {
             profileView?.isSpinnerShown = true
-            interactor?.fetchTopNews()
+            interactor?.fetchTopNews(selectedCategory: selectedCategory)
         }
     }
     
@@ -201,9 +205,9 @@ extension ProfileViewController: UICollectionViewDelegate & UICollectionViewData
         if indexPath.section == 0 {
             guard let selectedCategory = SearchArticlesCategoryType(rawValue: indexPath.item) else { return }
             self.selectedCategory = selectedCategory
-            if selectedCategory == .general {
-                interactor?.fetchTopNews()
-            }
+//            if selectedCategory == .general {
+//                interactor?.fetchTopNews()
+//            }
         }
     }
     

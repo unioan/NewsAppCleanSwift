@@ -13,6 +13,7 @@ protocol ProfileBusinessLogic {
     func saveArticle(_ article: ArticleModelProtocol)
     func removeArticle(_ article: ArticleModelProtocol?, from savedArticles: [ArticleModelProtocol])
     func animateNewsTableViewHeader(_ scrollPosition: Double)
+    func fetchTopNews(selectedCategory: SearchArticlesCategoryType)
 }
 
 class ProfileInteractor: ProfileBusinessLogic {
@@ -21,6 +22,17 @@ class ProfileInteractor: ProfileBusinessLogic {
     
     func setUpNavigationBarButtons() {
         presentor?.setUpNavigationBarButtons()
+    }
+    
+    func fetchTopNews(selectedCategory: SearchArticlesCategoryType) {
+        NewsService.fetchNews(for: selectedCategory) { result in
+            switch result {
+            case .success(let articleModel):
+                self.presentor?.configureArticleModel(ProfileModel.ArticleDataTransfer.Response(articleModel: articleModel))
+            case .failure(_):
+                self.presentor?.noMoreNewsLeft()
+            }
+        }
     }
     
     func fetchTopNews() {
