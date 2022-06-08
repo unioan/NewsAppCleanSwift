@@ -46,9 +46,15 @@ class ProfileViewController: UIViewController {
     var selectedCategory: SearchArticlesCategoryType = .general {
         didSet {
             articleModels.removeAll()
-            interactor?.fetchTopNews(selectedCategory: selectedCategory)
+            interactor?.fetchTopNews(for: selectedCategory)
             profileView?.reloadCollectionView()
         }
+    }
+    
+    var needsScrollingToSelectedCategory = false
+    
+    var isHeaderCategoriesDisabled = false {
+        didSet { profileView?.reloadCollectionViewCategories(selectedCategory: selectedCategory) }
     }
     
     // MARK: - Life cycles
@@ -58,7 +64,7 @@ class ProfileViewController: UIViewController {
         interactor?.setUpNavigationBarButtons()
         
         profileView?.onUserModelInput(userModel, self)
-        interactor?.fetchTopNews()
+        interactor?.fetchTopNews(for: selectedCategory)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -67,9 +73,9 @@ class ProfileViewController: UIViewController {
     }
     
     // MARK: - Actions
-    @objc func backButtonTapped() {
+    @objc func logOutButtonTapped() {
         profileCoordinator?.logout()
-        NewsService.resetNewsService()
+        NewsService.resetPageCounter()
     }
     
     @objc func savedButtonTapped() {
@@ -108,6 +114,12 @@ class ProfileViewController: UIViewController {
             articleModels[indexInArticleModels].isSaved = false
         }
     }
+    
+    func configureVCAfterSearchingByQuery(_ searchBar: UISearchBar) {
+        NewsService.resetPageCounter()
+        articleModels.removeAll()
+        searchBar.searchTextField.resignFirstResponder()
+    }
 
 }
 
@@ -132,7 +144,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if articleModels.count > 5 && indexPath.row == articleModels.count - 1 {
             profileView?.isSpinnerShown = true
-            interactor?.fetchTopNews(selectedCategory: selectedCategory)
+            interactor?.fetchTopNews(for: selectedCategory)
         }
     }
     
@@ -185,18 +197,11 @@ extension ProfileViewController: UICollectionViewDelegate & UICollectionViewData
         case .searchCategory:
             guard let categoryType = SearchArticlesCategoryType.init(rawValue: indexPath.item),
                   let categoryCell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchArticlesCategoryCell.identifier, for: indexPath) as? SearchArticlesCategoryCell else { fatalError() }
-            categoryType == selectedCategory ? categoryCell.selectedAppearence(true) : categoryCell.selectedAppearence(false)
-            categoryCell.configureCell(categoryType.cellText)
+            categoryCell.configureCell(categoryType.cellText, isSelected: categoryType == selectedCategory, isDisabled: isHeaderCategoriesDisabled)
             return categoryCell
         case .searchBar:
             guard let searchBarCell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCategoryBarCell.identifier, for: indexPath) as? SearchCategoryBarCell else { fatalError() }
             searchBarCell.searchBar.delegate = self
-            if selectedCategory == .general {
-                searchBarCell.searchBar.searchTextField.isEnabled = false
-                searchBarCell.searchBar.searchTextField.text = ""
-            } else {
-                searchBarCell.searchBar.searchTextField.isEnabled = true
-            }
             return searchBarCell
         }
     }
@@ -205,19 +210,39 @@ extension ProfileViewController: UICollectionViewDelegate & UICollectionViewData
         if indexPath.section == 0 {
             guard let selectedCategory = SearchArticlesCategoryType(rawValue: indexPath.item) else { return }
             self.selectedCategory = selectedCategory
-//            if selectedCategory == .general {
-//                interactor?.fetchTopNews()
-//            }
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if needsScrollingToSelectedCategory {
+            collectionView.scrollToItem(at: IndexPath(row: selectedCategory.rawValue, section: 0), at: .centeredHorizontally, animated: true)
+            needsScrollingToSelectedCategory = false
         }
     }
     
 }
-
+// MARK: - UISearchBarDelegate
 extension ProfileViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let text = searchBar.text, text != " ", selectedCategory != .general else { return }
-        print("DEBUG:: text \(searchBar.text?.lowercased()) has been entered")
+        guard let text = searchBar.text?.lowercased().removeWhiteSpace(), text != " " else { return }
+        configureVCAfterSearchingByQuery(searchBar)
+        interactor?.fetchNews(with: text, for: selectedCategory)
     }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        configureVCAfterSearchingByQuery(searchBar)
+        interactor?.fetchTopNews(for: selectedCategory)
+        isHeaderCategoriesDisabled = false
+        searchBar.searchTextField.text = ""
+        needsScrollingToSelectedCategory = true
+    }
+    
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        self.isHeaderCategoriesDisabled = true
+        return true
+    }
+    
 }
 
 // MARK: - ProfileDisplayLogic

@@ -126,6 +126,10 @@ class ProfileView: UIView {
         headerView.reloadData()
     }
     
+    func reloadCollectionViewCategories(selectedCategory: SearchArticlesCategoryType) {
+        headerView.reloadSections(IndexSet(integer: 0))
+    }
+    
     private func setupStacks(_ kind: ProfileViewStack) -> UIStackView {
         switch kind {
         case .emailLine:

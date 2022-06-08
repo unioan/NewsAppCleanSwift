@@ -9,11 +9,11 @@ import Foundation
 
 protocol ProfileBusinessLogic {
     func setUpNavigationBarButtons()
-    func fetchTopNews()
     func saveArticle(_ article: ArticleModelProtocol)
     func removeArticle(_ article: ArticleModelProtocol?, from savedArticles: [ArticleModelProtocol])
     func animateNewsTableViewHeader(_ scrollPosition: Double)
-    func fetchTopNews(selectedCategory: SearchArticlesCategoryType)
+    func fetchTopNews(for selectedCategory: SearchArticlesCategoryType)
+    func fetchNews(with query: String?, for selectedCategory: SearchArticlesCategoryType)
 }
 
 class ProfileInteractor: ProfileBusinessLogic {
@@ -24,7 +24,7 @@ class ProfileInteractor: ProfileBusinessLogic {
         presentor?.setUpNavigationBarButtons()
     }
     
-    func fetchTopNews(selectedCategory: SearchArticlesCategoryType) {
+    func fetchTopNews(for selectedCategory: SearchArticlesCategoryType) {
         NewsService.fetchNews(for: selectedCategory) { result in
             switch result {
             case .success(let articleModel):
@@ -35,8 +35,8 @@ class ProfileInteractor: ProfileBusinessLogic {
         }
     }
     
-    func fetchTopNews() {
-        NewsService.fetchTopNews { result in
+    func fetchNews(with query: String?, for selectedCategory: SearchArticlesCategoryType) {
+        NewsService.fetchNews(with: query, for: selectedCategory) { result in
             switch result {
             case .success(let articleModel):
                 self.presentor?.configureArticleModel(ProfileModel.ArticleDataTransfer.Response(articleModel: articleModel))

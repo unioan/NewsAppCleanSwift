@@ -13,8 +13,6 @@ enum SearchCategoryHeaderType: Int, CaseIterable {
 
 class SearchCategoryHeaderView: UICollectionView {
     
-    var bool = false
-    
     convenience init() {
         let frame = CGRect(x: 0, y: 0, width: 0, height: 90)
         let collectionViewLayout = Self.createCompositionalLayout()
@@ -22,7 +20,7 @@ class SearchCategoryHeaderView: UICollectionView {
         
         register(SearchCategoryBarCell.self, forCellWithReuseIdentifier: SearchCategoryBarCell.identifier)
         register(SearchArticlesCategoryCell.self, forCellWithReuseIdentifier: SearchArticlesCategoryCell.identifier)
-
+        
         isScrollEnabled = false
         backgroundColor = .white
     }

@@ -27,7 +27,7 @@ class ProfilePresenter: ProfilePresentationLogic {
     
     func setUpNavigationBarButtons() {
         guard let profileVC = viewController as? ProfileViewController else { return }
-        let leftButton = UIBarButtonItem(title: "Log out", style: .plain, target: profileVC, action: #selector(profileVC.backButtonTapped))
+        let leftButton = UIBarButtonItem(title: "Log out", style: .plain, target: profileVC, action: #selector(profileVC.logOutButtonTapped))
         profileVC.navigationItem.leftBarButtonItem = leftButton
         
         let rightButton = UIBarButtonItem(title: "Saved", style: .plain, target: profileVC, action: #selector(profileVC.savedButtonTapped))

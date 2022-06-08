@@ -20,7 +20,8 @@ class SearchCategoryBarCell: UICollectionViewCell {
     
     let searchBar: UISearchBar = {
         let sb = UISearchBar()
-        sb.placeholder = "Search"
+        sb.placeholder = "Global search"
+        sb.showsCancelButton = true
         return sb
     }()
     
