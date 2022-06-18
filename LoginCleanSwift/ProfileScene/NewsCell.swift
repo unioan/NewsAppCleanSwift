@@ -7,11 +7,16 @@
 
 import UIKit
 
+protocol SavedNewsContainesDeleteButton: AnyObject {
+    func deleteButtonTapped(_ cell: UITableViewCell)
+}
+
 class NewsCell: UITableViewCell {
     
     static let identifier = String(describing: NewsCell.self)
+    weak var delegate: SavedNewsContainesDeleteButton?
     
-    private let cardView: UIView = {
+    let cardView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 18
         return view
@@ -40,10 +45,12 @@ class NewsCell: UITableViewCell {
         return view
     }()
     
-    private let chevronImageView: UIImageView = {
+    private lazy var chevronImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
         iv.image = UIImage(systemName: "chevron.forward")
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(cellDeleteButtonTapped))
+        iv.addGestureRecognizer(gestureRecognizer)
         return iv
     }()
     
@@ -73,7 +80,7 @@ class NewsCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCell(with articleModel: ArticleModelProtocol) {
+    func configureCell(with articleModel: ArticleModelProtocol, _ isDeleteModeActive: Bool? = nil) {
         newsImageView.image = UIImage(data: articleModel.imageData)
         newsTitleLabel.text = articleModel.title
         newsDescriptionView.descriptionLabel.text = articleModel.description
@@ -84,12 +91,31 @@ class NewsCell: UITableViewCell {
             chevronImageView.image = UIImage(systemName: "chevron.forward")
             chevronImageView.tintColor = .systemBlue
         }
+        
+        setAppearance(isDeleteModeActive)
+    }
+    
+    @objc func cellDeleteButtonTapped() {
+        delegate?.deleteButtonTapped(self)
     }
     
     private func setViews() {
         selectionStyle = .none
-        addSubViewsAndTamicOff([cardView])
+        contentView.addSubViewsAndTamicOff([cardView])
         cardView.addSubViewsAndTamicOff([cellStack])
+    }
+    
+    private func setAppearance(_ style: Bool?) {
+        guard let style = style else { return }
+        if style {
+            chevronImageView.image = UIImage(systemName: "minus.circle.fill")
+            chevronImageView.tintColor = .systemRed
+            chevronImageView.isUserInteractionEnabled = true
+        } else {
+            chevronImageView.image = UIImage(systemName: "chevron.forward")
+            chevronImageView.tintColor = .systemBlue
+            chevronImageView.isUserInteractionEnabled = false
+        }
     }
     
     private func setConstrains() {

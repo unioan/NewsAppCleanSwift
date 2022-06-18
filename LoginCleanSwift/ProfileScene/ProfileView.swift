@@ -25,8 +25,8 @@ class ProfileView: UIView {
         self.newsTableView.delegate = profileVC
         self.newsTableView.dataSource = profileVC
         
-        self.headerView.delegate = profileVc
-        self.headerView.dataSource = profileVc
+        self.headerCollectionView.delegate = profileVc
+        self.headerCollectionView.dataSource = profileVc
     }
     
     var isSpinnerShown: Bool = false {
@@ -83,7 +83,7 @@ class ProfileView: UIView {
         return label
     }()
     
-    lazy var headerView: SearchCategoryHeaderView = {
+    lazy var headerCollectionView: SearchCategoryHeaderView = {
         let header = SearchCategoryHeaderView()
         return header
     }()
@@ -91,9 +91,10 @@ class ProfileView: UIView {
     lazy var newsTableView: UITableView = {
         let tableView = UITableView()
         tableView.separatorStyle = .none
-        tableView.tableHeaderView = headerView
+        tableView.tableHeaderView = headerCollectionView
         tableView.showsVerticalScrollIndicator = false
         tableView.register(NewsCell.self, forCellReuseIdentifier: NewsCell.identifier)
+        tableView.register(ErrorCell.self, forCellReuseIdentifier: ErrorCell.identifier)
         return tableView
     }()
     
@@ -123,11 +124,11 @@ class ProfileView: UIView {
     }
     
     func reloadCollectionView() {
-        headerView.reloadData()
+        headerCollectionView.reloadData()
     }
     
     func reloadCollectionViewCategories(selectedCategory: SearchArticlesCategoryType) {
-        headerView.reloadSections(IndexSet(integer: 0))
+        headerCollectionView.reloadSections(IndexSet(integer: 0))
     }
     
     private func setupStacks(_ kind: ProfileViewStack) -> UIStackView {
@@ -184,8 +185,8 @@ class ProfileView: UIView {
         
         
         NSLayoutConstraint.activate([userDataStack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
-                                     userDataStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18),
-                                     userDataStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -18)])
+                                     userDataStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+                                     userDataStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12)])
         
         NSLayoutConstraint.activate([photoView.heightAnchor.constraint(equalToConstant: 140),
                                      photoView.widthAnchor.constraint(equalToConstant: 140)])

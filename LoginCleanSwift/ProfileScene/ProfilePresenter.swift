@@ -27,7 +27,7 @@ class ProfilePresenter: ProfilePresentationLogic {
     
     func setUpNavigationBarButtons() {
         guard let profileVC = viewController as? ProfileViewController else { return }
-        let leftButton = UIBarButtonItem(title: "Log out", style: .plain, target: profileVC, action: #selector(profileVC.logOutButtonTapped))
+        let leftButton = UIBarButtonItem(title: "Log out", style: .done, target: profileVC, action: #selector(profileVC.logOutButtonTapped))
         profileVC.navigationItem.leftBarButtonItem = leftButton
         
         let rightButton = UIBarButtonItem(title: "Saved", style: .plain, target: profileVC, action: #selector(profileVC.savedButtonTapped))
@@ -53,7 +53,7 @@ class ProfilePresenter: ProfilePresentationLogic {
     
     func animateNewsTableViewHeader(_ scrollPosition: Double) {
         if scrollPosition < -0.1 && headerType == .hidden {
-            viewController?.profileView?.newsTableView.contentInset = UIEdgeInsets(top: -(viewController?.profileView?.headerView.bounds.height)!, left: 0, bottom: 0, right: 0)
+            viewController?.profileView?.newsTableView.contentInset = UIEdgeInsets(top: -(viewController?.profileView?.headerCollectionView.bounds.height)!, left: 0, bottom: 0, right: 0)
             headerType = .shown
                                // -40 / -20
         } else if scrollPosition < 0 && headerType == .shown {
@@ -63,7 +63,7 @@ class ProfilePresenter: ProfilePresentationLogic {
         } else if scrollPosition < -100 && headerType == .aboutToHide {
             UIView.animate(withDuration: TimeInterval.init(floatLiteral: 0.5), delay: .zero, options: .curveLinear) {
                 self.viewController?.profileView?.newsTableView.contentInset = UIEdgeInsets(
-                    top: -(self.viewController?.profileView?.headerView.bounds.height)!, left: 0, bottom: 0, right: 0)
+                    top: -(self.viewController?.profileView?.headerCollectionView.bounds.height)!, left: 0, bottom: 0, right: 0)
             } completion: { _ in self.headerType = .hidden }
         }
     }

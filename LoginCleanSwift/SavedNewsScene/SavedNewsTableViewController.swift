@@ -12,16 +12,28 @@ protocol SavedNewsTableVCCoordinatorDelegate: AnyObject {
     func showWebPage(_ urlString: String)
 }
 
+protocol SavedNewsDisplayLogic {
+    func removeArticleFromeSavedArray(at index: Int)
+    func reloadSavedTableView()
+}
+
 class SavedNewsTableViewController: UITableViewController {
     
     // MARK: - Properties
+    var interactor: SavedNewsBusinessLogic?
+    weak var savedCoordinator: SavedNewsTableVCCoordinatorDelegate?
+    
     var savedArticles = [ArticleModelProtocol]() {
         didSet {
             savedArticles.sort { $0.dateOfSave! > $1.dateOfSave! }
-            tableView.reloadData()
+            reloadSavedTableView()
         }
     }
-    weak var savedCoordinator: SavedNewsTableVCCoordinatorDelegate?
+    
+    var isDeleteModeActive = false
+    
+    lazy var savedModel = SavedNewsModel(savedArticles: savedArticles)
+
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -30,7 +42,7 @@ class SavedNewsTableViewController: UITableViewController {
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
         tableView.register(NewsCell.self, forCellReuseIdentifier: NewsCell.identifier)
-        setUpBackBarButton()
+        setUpViews()
     }
     
     // MARK: - Actions
@@ -38,10 +50,19 @@ class SavedNewsTableViewController: UITableViewController {
         savedCoordinator?.navigateBackToProfileCoordinator()
     }
     
+    @objc func deleteNewsButtonTapped() {
+        isDeleteModeActive.toggle()
+        setUpViews()
+        reloadSavedTableView()
+    }
+    
     // MARK: - Methods
-    func setUpBackBarButton() {
-        let backButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(navigateToProfileVC))
-        navigationItem.leftBarButtonItem = backButton
+    override var prefersHomeIndicatorAutoHidden: Bool {
+        return true
+    }
+
+    func setUpViews() {
+        interactor?.setUpViews(isDeleteModeActive)
     }
     
     // MARK: - TableView Delegate & DataSource
@@ -50,17 +71,54 @@ class SavedNewsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        savedArticles.count
+        return savedModel.numberOfArticles(in: section)
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return savedModel.numberOfSections
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsCell.identifier, for: indexPath) as? NewsCell else { return UITableViewCell() }
-        cell.configureCell(with: savedArticles[indexPath.row])
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsCell.identifier, for: indexPath) as? NewsCell,
+              let savedArticlesForSection = savedModel.articlesForSection(indexPath.section) else { return UITableViewCell() }
+        cell.configureCell(with: savedArticlesForSection[indexPath.row], isDeleteModeActive)
+        cell.delegate = self
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        savedCoordinator?.showWebPage(savedArticles[indexPath.row].urlToNewsSource)
+        if isDeleteModeActive {
+            
+        } else {
+            savedCoordinator?.showWebPage(savedModel.savedArticle(for: indexPath).urlToNewsSource)
+        }
     }
     
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let sectionTitle = savedModel.sectionTitle(for: section)
+        return sectionTitle
+    }
+    
+    
+}
+
+// MARK: - SavedNewsDisplayLogic Delegate
+extension SavedNewsTableViewController: SavedNewsDisplayLogic {
+    func reloadSavedTableView() {
+        tableView.reloadData()
+    }
+    
+    func removeArticleFromeSavedArray(at index: Int) {
+        savedArticles.remove(at: index)
+        reloadSavedTableView()
+    }
+}
+
+// MARK: - SavedNewsDisplayLogic Delegate
+extension SavedNewsTableViewController: SavedNewsContainesDeleteButton {
+    func deleteButtonTapped(_ cell: UITableViewCell) {
+        guard let cellIndex = tableView.indexPath(for: cell) else { return }
+        print("DEBUG::: IndexTapped \(cellIndex)")
+        //interactor?.removeArticle(savedArticles[cellIndex.row], at: cellIndex.row)
+    }
 }

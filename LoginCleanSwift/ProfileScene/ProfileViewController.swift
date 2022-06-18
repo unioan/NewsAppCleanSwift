@@ -51,6 +51,17 @@ class ProfileViewController: UIViewController {
         }
     }
     
+    var isInternetConnection = false {
+        didSet {
+            if oldValue == false {
+                self.interactor?.fetchTopNews(for: self.selectedCategory)
+                profileView?.reloadTableView()
+            } else if oldValue == true {
+                profileView?.reloadTableView()
+            }
+        }
+    }
+    
     var needsScrollingToSelectedCategory = false
     
     var isHeaderCategoriesDisabled = false {
@@ -62,9 +73,9 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         setupDependencies()
         interactor?.setUpNavigationBarButtons()
-        
         profileView?.onUserModelInput(userModel, self)
-        interactor?.fetchTopNews(for: selectedCategory)
+        
+        NetworkMonitor.shared.monitorInternetConnection { self.isInternetConnection = $0 }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -131,20 +142,32 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return articleModels.count
+        if isInternetConnection {
+            return articleModels.count
+        } else {
+            return 1
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: NewsCell.identifier, for: indexPath) as! NewsCell
-        cell.configureCell(with: articleModels[indexPath.row])
-        cell.selectionStyle = .none
-        return cell
+        if isInternetConnection {
+            let newsCell = tableView.dequeueReusableCell(withIdentifier: NewsCell.identifier, for: indexPath) as! NewsCell
+            newsCell.configureCell(with: articleModels[indexPath.row])
+            return newsCell
+        } else {
+            let errorCell = tableView.dequeueReusableCell(withIdentifier: ErrorCell.identifier, for: indexPath) as! ErrorCell
+            return errorCell
+        }
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if articleModels.count > 5 && indexPath.row == articleModels.count - 1 {
             profileView?.isSpinnerShown = true
-            interactor?.fetchTopNews(for: selectedCategory)
+            if isHeaderCategoriesDisabled {
+                interactor?.fetchNews(with: NewsService.query)
+            } else {
+                interactor?.fetchTopNews(for: selectedCategory)
+            }
         }
     }
     
@@ -164,13 +187,25 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
                 self.interactor?.removeArticle(articleTapped, from: self.savedArticles)
             }
         }
-
+        
         let swipeConfiguration = UISwipeActionsConfiguration(actions: [tralingSwipeButton])
+        
         return swipeConfiguration
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         interactor?.animateNewsTableViewHeader(scrollView.bounds.origin.y)
+        
+        if isHeaderCategoriesDisabled {
+            guard let tableView = scrollView as? UITableView,
+            let header = tableView.tableHeaderView as? SearchCategoryHeaderView else { return }
+            for subview in header.subviews {
+                guard let categoryBarCell = subview as? SearchCategoryBarCell else { return }
+                categoryBarCell.searchBar.resignFirstResponder()
+                print("DEBUG:: header \(categoryBarCell)")
+            }
+            
+        }
     }
     
 }
@@ -197,7 +232,9 @@ extension ProfileViewController: UICollectionViewDelegate & UICollectionViewData
         case .searchCategory:
             guard let categoryType = SearchArticlesCategoryType.init(rawValue: indexPath.item),
                   let categoryCell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchArticlesCategoryCell.identifier, for: indexPath) as? SearchArticlesCategoryCell else { fatalError() }
+            
             categoryCell.configureCell(categoryType.cellText, isSelected: categoryType == selectedCategory, isDisabled: isHeaderCategoriesDisabled)
+            
             return categoryCell
         case .searchBar:
             guard let searchBarCell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCategoryBarCell.identifier, for: indexPath) as? SearchCategoryBarCell else { fatalError() }
@@ -227,7 +264,7 @@ extension ProfileViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text?.lowercased().removeWhiteSpace(), text != " " else { return }
         configureVCAfterSearchingByQuery(searchBar)
-        interactor?.fetchNews(with: text, for: selectedCategory)
+        interactor?.fetchNews(with: text)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

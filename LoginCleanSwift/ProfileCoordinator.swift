@@ -60,6 +60,7 @@ extension ProfileCoordinator: ProfileVCCoordinatorDelegate {
 
 extension ProfileCoordinator: BackToProfileCoordinatorProtocol {
     func navigateBackToProfileCoordinator() {
+        navigationController.navigationBar.prefersLargeTitles = false
         navigationController.popViewController(animated: true)
         childCoordinators.removeLast()
     }
