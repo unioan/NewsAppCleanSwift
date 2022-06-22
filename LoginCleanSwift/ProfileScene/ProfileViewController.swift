@@ -83,6 +83,8 @@ class ProfileViewController: UIViewController {
         getSavedArticles()
     }
     
+
+    
     // MARK: - Actions
     @objc func logOutButtonTapped() {
         profileCoordinator?.logout()

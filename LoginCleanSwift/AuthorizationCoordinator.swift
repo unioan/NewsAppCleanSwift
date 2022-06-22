@@ -10,7 +10,7 @@ import PhotosUI
 
 class AuthorizationCoordinator: Coodrinator {
     var childCoordinators: [Coodrinator] = []
-    let passwordManager = PasswordManager()
+    //let passwordManager = PasswordManager()
     
     unowned let navigationController: UINavigationController
     
@@ -23,7 +23,7 @@ class AuthorizationCoordinator: Coodrinator {
         signInVC.authorizationCoordinator = self
         navigationController.viewControllers = [signInVC]
         
-        if passwordManager.isLoged {
+        if PasswordManager.shared.isLoged {
             let profileVC = ProfileViewController()
             navigationController.isNavigationBarHidden = true // Create separate coordinator for profile
             navigationController.viewControllers.append(profileVC)

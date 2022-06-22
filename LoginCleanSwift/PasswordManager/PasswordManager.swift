@@ -14,13 +14,16 @@ class PasswordManager {
     
     var isLoged: Bool { return logged }
     var userLogin: String = ""
+    static let shared = PasswordManager()
     
-    class var shared: PasswordManager {
-        struct Static {
-            static let instance = PasswordManager()
-        }
-        return Static.instance
-    }
+    private init() { }
+    
+//    class var shared: PasswordManager {
+//        struct Static {
+//            static let instance = PasswordManager()
+//        }
+//        return Static.instance
+//    }
     
     func register(user: UserAuthData, completion: () -> ()) {
         if  defaults.object(forKey: user.login) == nil {
@@ -43,6 +46,7 @@ class PasswordManager {
         }
         logged.toggle()
         userLogin = request.login
+        print("DEBUG::: PasswordManager method signIn has been triggered / now user is - \(userLogin)")
         completion(.success(userModel))
     }
     

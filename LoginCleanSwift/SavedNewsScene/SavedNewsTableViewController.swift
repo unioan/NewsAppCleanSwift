@@ -13,7 +13,7 @@ protocol SavedNewsTableVCCoordinatorDelegate: AnyObject {
 }
 
 protocol SavedNewsDisplayLogic {
-    func removeArticleFromeSavedArray(at index: Int)
+    func removeArticleFromSavedAdapter(_ article: ArticleModelProtocol, at indexPath: IndexPath)
     func reloadSavedTableView()
 }
 
@@ -32,8 +32,8 @@ class SavedNewsTableViewController: UITableViewController {
     
     var isDeleteModeActive = false
     
-    lazy var savedModel = SavedNewsModel(savedArticles: savedArticles)
-
+    lazy var savedNews = SavedNewsAdapter(savedArticles: savedArticles)
+    
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -60,7 +60,7 @@ class SavedNewsTableViewController: UITableViewController {
     override var prefersHomeIndicatorAutoHidden: Bool {
         return true
     }
-
+    
     func setUpViews() {
         interactor?.setUpViews(isDeleteModeActive)
     }
@@ -71,34 +71,32 @@ class SavedNewsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return savedModel.numberOfArticles(in: section)
+        return savedNews.numberOfArticles(in: section)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return savedModel.numberOfSections
+        return savedNews.numberOfSections
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsCell.identifier, for: indexPath) as? NewsCell,
-              let savedArticlesForSection = savedModel.articlesForSection(indexPath.section) else { return UITableViewCell() }
+              let savedArticlesForSection = savedNews.articlesForSection(indexPath.section) else { return UITableViewCell() }
         cell.configureCell(with: savedArticlesForSection[indexPath.row], isDeleteModeActive)
         cell.delegate = self
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if isDeleteModeActive {
-            
-        } else {
-            savedCoordinator?.showWebPage(savedModel.savedArticle(for: indexPath).urlToNewsSource)
+        if !isDeleteModeActive {
+            let tappedArticle = savedNews.getSavedArticle(for: indexPath)
+            savedCoordinator?.showWebPage(tappedArticle.urlToNewsSource)
         }
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let sectionTitle = savedModel.sectionTitle(for: section)
+        let sectionTitle = savedNews.sectionTitle(for: section)
         return sectionTitle
     }
-    
     
 }
 
@@ -108,8 +106,8 @@ extension SavedNewsTableViewController: SavedNewsDisplayLogic {
         tableView.reloadData()
     }
     
-    func removeArticleFromeSavedArray(at index: Int) {
-        savedArticles.remove(at: index)
+    func removeArticleFromSavedAdapter(_ article: ArticleModelProtocol, at indexPath: IndexPath)  {
+        savedNews.deleteFromSavedNews(article, at: indexPath)
         reloadSavedTableView()
     }
 }
@@ -117,8 +115,8 @@ extension SavedNewsTableViewController: SavedNewsDisplayLogic {
 // MARK: - SavedNewsDisplayLogic Delegate
 extension SavedNewsTableViewController: SavedNewsContainesDeleteButton {
     func deleteButtonTapped(_ cell: UITableViewCell) {
-        guard let cellIndex = tableView.indexPath(for: cell) else { return }
-        print("DEBUG::: IndexTapped \(cellIndex)")
-        //interactor?.removeArticle(savedArticles[cellIndex.row], at: cellIndex.row)
+        guard let cellIndexPath = tableView.indexPath(for: cell) else { return }
+        let savedArticleFromIndexPath = savedNews.getSavedArticle(for: cellIndexPath)
+        interactor?.removeArticle(savedArticleFromIndexPath, at: cellIndexPath)
     }
 }

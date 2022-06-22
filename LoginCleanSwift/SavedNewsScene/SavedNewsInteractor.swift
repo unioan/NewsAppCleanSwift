@@ -9,7 +9,7 @@ import Foundation
 
 protocol SavedNewsBusinessLogic {
     func setUpViews(_ isDeleteModeActive: Bool)
-    func removeArticle(_ article: ArticleModelProtocol, at index: Int)
+    func removeArticle(_ article: ArticleModelProtocol, at indexPath: IndexPath)
 }
 
 class SavedNewsInteractor: SavedNewsBusinessLogic {
@@ -20,9 +20,10 @@ class SavedNewsInteractor: SavedNewsBusinessLogic {
         presentor?.setUpViews(isDeleteModeActive)
     }
     
-    func removeArticle(_ article: ArticleModelProtocol, at index: Int) {
+    func removeArticle(_ article: ArticleModelProtocol, at indexPath: IndexPath)  {
         NewsPersistanceManager.shared.removeArticleFromSaved(article)
-        presentor?.removeArticleFromeSavedArray(at: index)
+        // update to delete article from dictionary
+        presentor?.removeArticleFromSavedAdapter(article, at: indexPath)
     }
 
 }

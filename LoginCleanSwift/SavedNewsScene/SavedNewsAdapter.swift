@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SavedNewsModel {
+struct SavedNewsAdapter {
     
     // MARK: - Properties
     private var savedArticles: [ArticleModelProtocol]
@@ -29,16 +29,17 @@ struct SavedNewsModel {
         guard let articlesCountInSection = articlesForSection(section)?.count else { fatalError() }
         return articlesCountInSection
     }
-    
+    // works perfectly fine
+    func getDictKeyForSection(_ section: Int) -> Int {
+        let sortedKeys = savedArticlesDict.keys.sorted { $0 < $1 }
+        let key = sortedKeys[section]
+        return key
+    }
+    // works perfectly fine
     func articlesForSection(_ section: Int) -> [ArticleModelProtocol]? {
         var array: [ArticleModelProtocol]?
-        
-        let sortedKeys = savedArticlesDict.keys.sorted { $0 < $1 }
-        for (i, key) in sortedKeys.enumerated() {
-            if i == section {
-                array = savedArticlesDict[key]
-            }
-        }
+        let key = getDictKeyForSection(section)
+        array = savedArticlesDict[key]
         return array
     }
     
@@ -53,11 +54,28 @@ struct SavedNewsModel {
         }
         return title
     }
-    
-    func savedArticle(for indexPath: IndexPath) -> ArticleModelProtocol {
+    // Needs testing
+    func getSavedArticle(for indexPath: IndexPath) -> ArticleModelProtocol {
         guard let articlesFromSection = articlesForSection(indexPath.section) else { fatalError() }
-        let articleFromSection = savedArticles.first { $0.title == articlesFromSection[indexPath.row].title }
-        return articleFromSection!
+        return articlesFromSection[indexPath.row]
+    }
+    
+    // To be deleted after getSavedArticle is tested / UPD: Waits to be deleted
+//    func savedArticle(for indexPath: IndexPath) -> ArticleModelProtocol {
+//        guard let articlesFromSection = articlesForSection(indexPath.section) else { fatalError() }
+//        let articleFromSection = savedArticles.first { $0.title == articlesFromSection[indexPath.row].title }
+//        return articleFromSection!
+//    }
+    
+    mutating func deleteFromSavedNews(_ article: ArticleModelProtocol, at indexPath: IndexPath) {
+        guard var articles = articlesForSection(indexPath.section) else { return }
+        let key = getDictKeyForSection(indexPath.section)
+        if articles.count > 1 {
+            articles.remove(at: indexPath.row)
+            savedArticlesDict.updateValue(articles, forKey: key)
+        } else {
+            savedArticlesDict.removeValue(forKey: key)
+        }
     }
     
     // MARK: - Internal Methods

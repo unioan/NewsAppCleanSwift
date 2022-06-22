@@ -9,7 +9,7 @@ import UIKit
 
 protocol SavedNewsPresentationLogic {
     func setUpViews(_ isDeleteModeActive: Bool)
-    func removeArticleFromeSavedArray(at index: Int)
+    func removeArticleFromSavedAdapter(_ article: ArticleModelProtocol, at indexPath: IndexPath)
 }
 
 class SavedNewsPresentor: SavedNewsPresentationLogic {
@@ -42,8 +42,9 @@ class SavedNewsPresentor: SavedNewsPresentationLogic {
         savedNewsVC.navigationItem.rightBarButtonItem = deleteNewsButton
     }
     
-    func removeArticleFromeSavedArray(at index: Int) {
-        viewController?.removeArticleFromeSavedArray(at: index)
+    
+    func removeArticleFromSavedAdapter(_ article: ArticleModelProtocol, at indexPath: IndexPath) {
+        viewController?.removeArticleFromSavedAdapter(article, at: indexPath)
     }
     
 }
