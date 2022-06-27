@@ -17,7 +17,7 @@ protocol SavedNewsDisplayLogic {
     func reloadSavedTableView()
 }
 
-class SavedNewsTableViewController: UITableViewController {
+final class SavedNewsTableViewController: UITableViewController {
     
     // MARK: - Properties
     var interactor: SavedNewsBusinessLogic?

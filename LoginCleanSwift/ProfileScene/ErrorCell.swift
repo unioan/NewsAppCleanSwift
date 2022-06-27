@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ErrorCell: UITableViewCell {
+final class ErrorCell: UITableViewCell {
     
     static let identifier = String(describing: ErrorCell.self)
     

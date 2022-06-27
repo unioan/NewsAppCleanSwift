@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProfileView: UIView {
+final class ProfileView: UIView {
     
     // MARK: - Properties
     

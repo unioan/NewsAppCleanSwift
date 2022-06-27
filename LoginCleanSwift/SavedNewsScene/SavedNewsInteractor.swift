@@ -12,7 +12,7 @@ protocol SavedNewsBusinessLogic {
     func removeArticle(_ article: ArticleModelProtocol, at indexPath: IndexPath)
 }
 
-class SavedNewsInteractor: SavedNewsBusinessLogic {
+final class SavedNewsInteractor: SavedNewsBusinessLogic {
 
     var presentor: SavedNewsPresentationLogic?
     

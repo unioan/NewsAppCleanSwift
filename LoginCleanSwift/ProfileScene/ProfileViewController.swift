@@ -21,7 +21,7 @@ protocol ProfileVCCoordinatorDelegate: AnyObject {
     func showSavedNews(_ savedArticles: [ArticleModelProtocol])
 }
 
-class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
     
     // MARK: - Properties
     var profileView: ProfileView?
@@ -75,7 +75,9 @@ class ProfileViewController: UIViewController {
         interactor?.setUpNavigationBarButtons()
         profileView?.onUserModelInput(userModel, self)
         
-        NetworkMonitor.shared.monitorInternetConnection { self.isInternetConnection = $0 }
+        NetworkMonitor.shared.monitorInternetConnection { [weak self] isConnected in
+            self?.isInternetConnection = isConnected
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -110,8 +112,8 @@ class ProfileViewController: UIViewController {
     }
     
     func getSavedArticles() {
-        NewsPersistanceManager.shared.getSavedArticles { savedArticles in
-            self.savedArticles = savedArticles
+        NewsPersistanceManager.shared.getSavedArticles { [weak self] savedArticles in
+            self?.savedArticles = savedArticles
         }
     }
     

@@ -20,7 +20,7 @@ protocol ProfilePresentationLogic {
     func animateNewsTableViewHeader(_ scrollPosition: Double)
 }
 
-class ProfilePresenter: ProfilePresentationLogic {
+final class ProfilePresenter: ProfilePresentationLogic {
     
     var viewController: ProfileDisplayLogic?
     var headerType: HeaderType = .hidden

@@ -12,7 +12,7 @@ protocol SavedNewsPresentationLogic {
     func removeArticleFromSavedAdapter(_ article: ArticleModelProtocol, at indexPath: IndexPath)
 }
 
-class SavedNewsPresentor: SavedNewsPresentationLogic {
+final class SavedNewsPresentor: SavedNewsPresentationLogic {
     
     var viewController: SavedNewsDisplayLogic?
     

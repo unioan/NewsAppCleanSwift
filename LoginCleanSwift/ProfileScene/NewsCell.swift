@@ -11,7 +11,7 @@ protocol SavedNewsContainesDeleteButton: AnyObject {
     func deleteButtonTapped(_ cell: UITableViewCell)
 }
 
-class NewsCell: UITableViewCell {
+final class NewsCell: UITableViewCell {
     
     static let identifier = String(describing: NewsCell.self)
     weak var delegate: SavedNewsContainesDeleteButton?

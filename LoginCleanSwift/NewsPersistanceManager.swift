@@ -14,7 +14,7 @@ class NewsPersistanceManager {
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
     
-    private let login = PasswordManager.shared.userLogin
+    private var login: String { PasswordManager.shared.userLogin }
     private var savedArticlesDirectory: URL {
         let url = FileManager.documentDirectoryURL.appendingPathComponent("savedArticles\(login)")
         try? manager.createDirectory(at: url, withIntermediateDirectories: false, attributes: [:])
