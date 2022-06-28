@@ -27,7 +27,7 @@ class SignInViewController: UIViewController {
     weak var signInView: SignInViewInput?
     var interactor: SignInInteractor?
     weak var authorizationCoordinator: AuthorizationCoordinator?
-    
+    var state: SignInStage = .logIn
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -71,8 +71,8 @@ extension SignInViewController: SignInViewOutput {
 extension SignInViewController: SignInDisplayLogic {
     func displayUser(_ viewModel: SignInModels.ViewModel) {
         signInView?.displayUser(viewModel)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.authorizationCoordinator?.navigateToProfile(viewModel.userModel)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            self?.authorizationCoordinator?.navigateToProfile(viewModel.userModel)
         }
     }
 }

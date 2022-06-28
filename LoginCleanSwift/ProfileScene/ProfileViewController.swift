@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol ProfileDisplayLogic {
+protocol ProfileDisplayLogic: AnyObject {
     var profileView: ProfileView? { get set }
     func displayArticles(_ article: ProfileModel.ArticleDataTransfer.ViewModel)
     func noMoreNewsLeft()

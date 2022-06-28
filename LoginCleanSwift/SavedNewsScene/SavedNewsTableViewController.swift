@@ -12,7 +12,7 @@ protocol SavedNewsTableVCCoordinatorDelegate: AnyObject {
     func showWebPage(_ urlString: String)
 }
 
-protocol SavedNewsDisplayLogic {
+protocol SavedNewsDisplayLogic: AnyObject {
     func removeArticleFromSavedAdapter(_ article: ArticleModelProtocol, at indexPath: IndexPath)
     func reloadSavedTableView()
 }

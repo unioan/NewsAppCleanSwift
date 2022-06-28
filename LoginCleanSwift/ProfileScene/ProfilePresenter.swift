@@ -22,7 +22,7 @@ protocol ProfilePresentationLogic {
 
 final class ProfilePresenter: ProfilePresentationLogic {
     
-    var viewController: ProfileDisplayLogic?
+    weak var viewController: ProfileDisplayLogic?
     var headerType: HeaderType = .hidden
     
     func setUpNavigationBarButtons() {

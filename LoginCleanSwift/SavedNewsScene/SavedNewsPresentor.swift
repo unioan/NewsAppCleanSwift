@@ -14,7 +14,7 @@ protocol SavedNewsPresentationLogic {
 
 final class SavedNewsPresentor: SavedNewsPresentationLogic {
     
-    var viewController: SavedNewsDisplayLogic?
+    weak var viewController: SavedNewsDisplayLogic?
     
     func setUpViews(_ isDeleteModeActive: Bool) {
         guard let savedNewsVC = viewController as? SavedNewsTableViewController else { return }

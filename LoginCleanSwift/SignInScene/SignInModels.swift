@@ -7,6 +7,10 @@
 
 import Foundation
 
+enum SignInStage {
+    case logIn, incorrect, erase
+}
+
 enum SignInModels {
     
     struct Request {
