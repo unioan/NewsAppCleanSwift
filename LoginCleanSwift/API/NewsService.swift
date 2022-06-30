@@ -11,26 +11,29 @@ enum FetchError: Error {
     case NoTopNewsLeft
 }
 
-struct NewsService {
-    private static let session = URLSession.shared
-    private static let decoder = JSONDecoder()
+class NewsService {
+    private let session = URLSession.shared
+    private let decoder = JSONDecoder()
+    static let shared = NewsService()
     
-    static var query: String = ""
-    static var isSearchingMode = false
+    private init() {}
     
-    private static var link: String {
+    var query: String = ""
+    var isSearchingMode = false
+    
+    private var link: String {
         if isSearchingMode { return "https://newsapi.org/v2/everything?sortBy=relevancy&page=" }
         else { return "https://newsapi.org/v2/top-headlines?country=gb&page=" }
     }
-    private static var pageNumber = 0
-    private static let apiKey = "&apiKey=fa2130cfbf954c5f888fd55eb8f7b0c9"
+    private var pageNumber = 0
+    private let apiKey = "&apiKey=fa2130cfbf954c5f888fd55eb8f7b0c9"
     // API keys: 9497dbb41ea348d7932167d98fbd4c9b 3e3d22e0bfc946688a532dc76535414b fa2130cfbf954c5f888fd55eb8f7b0c9
     
-    static var searchArticlesCategory: SearchArticlesCategoryType = .general {
+    var searchArticlesCategory: SearchArticlesCategoryType = .general {
         didSet { if oldValue != searchArticlesCategory { pageNumber = 0 } }
     }
     
-    static func fetchNews(with query: String? = nil,
+    func fetchNews(with query: String? = nil,
                           for category: SearchArticlesCategoryType? = nil,
                           compleation: @escaping (Result<ProfileModel.ArticleModel, FetchError>) -> Void) {
         configureSearchingMode(query, for: category)
@@ -40,8 +43,8 @@ struct NewsService {
                 DispatchQueue.main.async { compleation(.failure(.NoTopNewsLeft)) }
                 return
             }
-            articles.forEach { article in
-                fetchImage(with: article.urlToImage!) { imageData in
+            articles.forEach { [weak self] article in
+                self?.fetchImage(with: article.urlToImage!) { imageData in
                     DispatchQueue.main.async { compleation(.success(ProfileModel.ArticleModel(article: article, imageData: imageData)))
                     }
                 }
@@ -49,7 +52,7 @@ struct NewsService {
         }
     }
     
-    private static func fetchNewsModels(compleation: @escaping ([Article]) -> Void) {
+    private func fetchNewsModels(compleation: @escaping ([Article]) -> Void) {
         var url: URL!
         if isSearchingMode {
             guard let queryUrl = URL(string: link + String(pageNumber) + "&q=" + query + apiKey) else { return }
@@ -61,9 +64,9 @@ struct NewsService {
         print("DEBUG:: NewsService.fetchNews pageNumber: \(pageNumber)")
         print("DEBUG:: \(url)")
         
-        session.dataTask(with: url) { data, _ , error in
+        session.dataTask(with: url) { [weak self] data, _ , error in
             guard let data = data,
-                  let newsModel = try? decoder.decode(NewsModel.self, from: data) else { return }
+                  let newsModel = try? self?.decoder.decode(NewsModel.self, from: data) else { return }
             let newsModelsHasImages = newsModel.articles.filter {
                 if $0.urlToImage != nil && $0.description != nil { return true }
                 return false
@@ -74,7 +77,7 @@ struct NewsService {
     
     // ===========================================================
     
-    private static func configureSearchingMode(_ query: String?, for category: SearchArticlesCategoryType?) {
+    private func configureSearchingMode(_ query: String?, for category: SearchArticlesCategoryType?) {
         if let query = query {
             isSearchingMode = true
             pageNumber += 1
@@ -88,7 +91,7 @@ struct NewsService {
         }
     }
     
-    private static func fetchImage(with urlToImage: String, completion: @escaping (Data) -> Void) {
+    private func fetchImage(with urlToImage: String, completion: @escaping (Data) -> Void) {
         guard let url = URL(string: urlToImage) else { return }
         session.dataTask(with: url) { data, _ , _ in
             guard let imageData = data else { return }
@@ -96,7 +99,7 @@ struct NewsService {
         }.resume()
     }
     
-    static func resetPageCounter() {
+    func resetPageCounter() {
         pageNumber = 0
     }
     

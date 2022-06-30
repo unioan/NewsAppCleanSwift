@@ -9,9 +9,10 @@ import UIKit
 
 protocol SignInViewInput: AnyObject {
     func displayUser(_ viewModel: SignInModels.ViewModel)
+    func hideKeybord()
 }
 
-class SignInView: UIView {
+final class SignInView: UIView {
     
     // MARK: - Properties
     weak var delegate: SignInViewOutput?
@@ -50,6 +51,7 @@ class SignInView: UIView {
         tf.layer.cornerRadius = 20
         tf.layer.borderWidth = 2
         tf.layer.borderColor = UIColor.darkGray.cgColor
+        tf.isSecureTextEntry = true
         return tf
     }()
     
@@ -83,6 +85,8 @@ class SignInView: UIView {
     // MARK: - Life Cycle
     override init(frame: CGRect) {
         super.init(frame: frame)
+        passwordTF.delegate = self
+        
         setupViews()
         setupConstraints()
     }
@@ -133,7 +137,7 @@ class SignInView: UIView {
         
         let buttonStack = setupStacks(.loginButtons)
         
-        NSLayoutConstraint.activate([loginLabel.topAnchor.constraint(equalTo: topAnchor, constant: 120),
+        NSLayoutConstraint.activate([loginLabel.topAnchor.constraint(equalTo: topAnchor, constant: 140),
                                      loginLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30)])
         
         NSLayoutConstraint.activate([loginTF.centerYAnchor.constraint(equalTo: loginLabel.centerYAnchor),
@@ -159,8 +163,29 @@ class SignInView: UIView {
 
 // MARK: - SignInView Input
 extension SignInView: SignInViewInput {
+    func hidePasswordTFPlaceholder() {
+        passwordTF.placeholder = ""
+    }
+    
+    func hideKeybord() {
+        loginTF.resignFirstResponder()
+        passwordTF.resignFirstResponder()
+    }
+    
     func displayUser(_ viewModel: SignInModels.ViewModel) {
         loginTF.text = viewModel.login
         passwordTF.text = viewModel.password
+    }
+}
+
+extension SignInView: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        passwordTF.placeholder = ""
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField.text == nil || textField.text == " " || textField.text == "" {
+            passwordTF.placeholder = "🔒"
+        }
     }
 }

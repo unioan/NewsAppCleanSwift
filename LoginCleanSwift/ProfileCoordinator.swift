@@ -32,8 +32,11 @@ class ProfileCoordinator: Coodrinator {
         let profileVC = ProfileViewController()
         profileVC.userModel = userModel 
         profileVC.profileCoordinator = self
-        navigationController.pushViewController(profileVC, animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.navigationController.pushViewController(profileVC, animated: true)
+        }
     }
+    
 }
 
 

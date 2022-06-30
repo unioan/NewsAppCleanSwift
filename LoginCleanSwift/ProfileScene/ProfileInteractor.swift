@@ -25,18 +25,18 @@ final class ProfileInteractor: ProfileBusinessLogic {
     }
     
     func fetchTopNews(for selectedCategory: SearchArticlesCategoryType) {
-        NewsService.fetchNews(for: selectedCategory) { [weak self] result in
+        NewsService.shared.fetchNews(for: selectedCategory) { result in
             switch result {
             case .success(let articleModel):
-                self?.presentor?.configureArticleModel(ProfileModel.ArticleDataTransfer.Response(articleModel: articleModel))
+                self.presentor?.configureArticleModel(ProfileModel.ArticleDataTransfer.Response(articleModel: articleModel))
             case .failure(_):
-                self?.presentor?.noMoreNewsLeft()
+                self.presentor?.noMoreNewsLeft()
             }
         }
     }
     
     func fetchNews(with query: String?) {
-        NewsService.fetchNews(with: query, for: nil) { [weak self] result in
+        NewsService.shared.fetchNews(with: query, for: nil) { [weak self] result in
             switch result {
             case .success(let articleModel):
                 self?.presentor?.configureArticleModel(ProfileModel.ArticleDataTransfer.Response(articleModel: articleModel))

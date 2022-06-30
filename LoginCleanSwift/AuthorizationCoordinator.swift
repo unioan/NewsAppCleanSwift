@@ -10,7 +10,6 @@ import PhotosUI
 
 class AuthorizationCoordinator: Coodrinator {
     var childCoordinators: [Coodrinator] = []
-    //let passwordManager = PasswordManager()
     
     unowned let navigationController: UINavigationController
     

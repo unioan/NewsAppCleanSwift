@@ -9,9 +9,10 @@ import UIKit
 
 protocol SignInDisplayLogic { // Presenter communicates with ViewController through this interface
     func displayUser(_ viewModel: SignInModels.ViewModel)
+    func presentAllert(_ alertKind: AlertKind)
 }
 
-protocol SignInViewOutput: AnyObject { // View communicates with ViewController through this interface
+protocol SignInViewOutput: AnyObject  { // View communicates with ViewController through this interface
     func signUpButtonTapped()
     func loginDataSubmited(login: String, password: String)
 }
@@ -27,6 +28,7 @@ class SignInViewController: UIViewController {
     weak var signInView: SignInViewInput?
     var interactor: SignInInteractor?
     weak var authorizationCoordinator: AuthorizationCoordinator?
+    
     var state: SignInStage = .logIn
     
     // MARK: - Life Cycle
@@ -38,6 +40,10 @@ class SignInViewController: UIViewController {
         setupDependencies()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.dissmissAlert()
+    }
     
     // MARK: - Methods
     func setupDependencies() {
@@ -53,6 +59,16 @@ class SignInViewController: UIViewController {
         interactor.presentor = presenter
         presenter.viewController = self
     }
+    
+    func presentAlertAndHideKeybord(_ alertKind: AlertKind) {
+        AlertView.presentAlert(alertKind: alertKind, viewController: self)
+        signInView?.hideKeybord()
+    }
+    
+    func dissmissAlert() {
+        AlertView.dismissAlert(from: self)
+    }
+    
 }
 
 // MARK: - Methods triggered by view
@@ -71,9 +87,12 @@ extension SignInViewController: SignInViewOutput {
 extension SignInViewController: SignInDisplayLogic {
     func displayUser(_ viewModel: SignInModels.ViewModel) {
         signInView?.displayUser(viewModel)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            self?.authorizationCoordinator?.navigateToProfile(viewModel.userModel)
-        }
+        presentAlertAndHideKeybord(.succsess)
+        authorizationCoordinator?.navigateToProfile(viewModel.userModel)
+    }
+    
+    func presentAllert(_ alertKind: AlertKind) {
+        presentAlertAndHideKeybord(alertKind)
     }
 }
 

@@ -38,9 +38,13 @@ class NewsPersistanceManager {
     func getSavedArticles(compleation: ([ArticleModelProtocol]) -> ()) {
         print("DEBUG::: NewsPersistanceManager - authenticated user \(login)")
         guard let articlesNames = try? manager.contentsOfDirectory(atPath: savedArticlesDirectory.path) else { return }
-        let urlsToArticles = articlesNames.map { savedArticlesDirectory.appendingPathComponent($0) }
-        let articlesData = urlsToArticles.map { try? Data(contentsOf: $0) }
-        let articleOptionalModels = articlesData.map { try? decoder.decode(ProfileModel.ArticleModel.self, from: $0 ?? Data()) }
+        let urlsToArticles = articlesNames.map { [weak self] articleName in
+            self?.savedArticlesDirectory.appendingPathComponent(articleName)
+        }
+        let articlesData = urlsToArticles.map { try? Data(contentsOf: $0!) }
+        let articleOptionalModels = articlesData.map { [weak self] articleData in
+            try? self?.decoder.decode(ProfileModel.ArticleModel.self, from: articleData ?? Data())
+        }
         let articles = articleOptionalModels.compactMap { $0 }
         compleation(articles)
     }

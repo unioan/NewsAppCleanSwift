@@ -11,8 +11,6 @@ protocol SignInBusinessLogic {
     func fetchUser(_ request: SignInModels.Request)
 }
 
-
-
 class SignInInteractor: SignInBusinessLogic {
     
     // MARK: - Properties
@@ -33,7 +31,6 @@ class SignInInteractor: SignInBusinessLogic {
                 let response = SignInModels.Response(userModel)
                 presentor.present(.success(response))
             case .failure(let error):
-                print("Error \(error.rawValue)")
                 presentor.present(.error(error))
             }
         }

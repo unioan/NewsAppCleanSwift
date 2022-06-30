@@ -34,7 +34,6 @@ final class SavedNewsTableViewController: UITableViewController {
     
     lazy var savedNews = SavedNewsAdapter(savedArticles: savedArticles)
     
-    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()

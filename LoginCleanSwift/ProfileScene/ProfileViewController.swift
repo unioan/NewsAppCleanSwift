@@ -85,12 +85,10 @@ final class ProfileViewController: UIViewController {
         getSavedArticles()
     }
     
-
-    
     // MARK: - Actions
     @objc func logOutButtonTapped() {
         profileCoordinator?.logout()
-        NewsService.resetPageCounter()
+        NewsService.shared.resetPageCounter()
     }
     
     @objc func savedButtonTapped() {
@@ -131,7 +129,7 @@ final class ProfileViewController: UIViewController {
     }
     
     func configureVCAfterSearchingByQuery(_ searchBar: UISearchBar) {
-        NewsService.resetPageCounter()
+        NewsService.shared.resetPageCounter()
         articleModels.removeAll()
         searchBar.searchTextField.resignFirstResponder()
     }
@@ -168,7 +166,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         if articleModels.count > 5 && indexPath.row == articleModels.count - 1 {
             profileView?.isSpinnerShown = true
             if isHeaderCategoriesDisabled {
-                interactor?.fetchNews(with: NewsService.query)
+                interactor?.fetchNews(with: NewsService.shared.query)
             } else {
                 interactor?.fetchTopNews(for: selectedCategory)
             }

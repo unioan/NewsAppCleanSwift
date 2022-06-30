@@ -34,42 +34,21 @@ class SignInPresenter: SignInPresentationLogic {
         switch state {
         case .success(let response):
             var viewModel = SignInModels.ViewModel(response.userModel)
-            viewModel.login = "✅ " + response.login
-            viewModel.password = "✅ " + response.password
+            viewModel.login = response.login
+            viewModel.password = ""
             viewController?.displayUser(viewModel)
         case .error(let error):
             switch error {
             case .wrongEmail:
-                print("")
+                viewController.presentAllert(AlertKind.error(error))
+                print("DEBUG::: Wrong email")
             case .wrongPassword:
-                print("")
+                viewController.presentAllert(AlertKind.error(error))
+                print("DEBUG::: Wrong password")
             }
         }
     }
     
 }
-        
-//        func presentUser(_ response: SignInModels.ViewModel) {
-//            let login = "✅ " + response.login
-//            let password = "✅ " + response.password
-//            let viewModel = SignInModels.ViewModel(login: login, password: password)
-//            viewController?.displayUser(viewModel)
-//        }
-//
-//        func presentError(_ error: LoginError, for response: SignInModels.ViewModel) {
-//            switch error {
-//            case .wrongEmail:
-//                let login = "❌ " + response.login
-//                let password = response.password
-//                let viewModel = SignInModels.ViewModel(login: login, password: password)
-//                viewController?.displayUser(viewModel)
-//            case .wrongPassword:
-//                let login = "✅ " + response.login
-//                let password = response.password
-//                let viewModel = SignInModels.ViewModel(login: login, password: password)
-//                viewController?.displayUser(viewModel)
-//            }
-//        }
-        
     
 
