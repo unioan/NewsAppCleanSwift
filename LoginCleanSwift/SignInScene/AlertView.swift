@@ -7,6 +7,12 @@
 
 import UIKit
 
+
+// Animation for notification to appear
+//        UIView.animate(withDuration: 0.5) {
+//            self.alertCardView.center = CGPoint(x: 10, y: 200)
+//        }
+
 enum AlertKind {
     case error(LoginError)
     case succsess
@@ -14,9 +20,9 @@ enum AlertKind {
 
 final class AlertView: UIView {
     
-    private var alertKind: AlertKind
+    private var alertKind: AlertKind = .succsess
     private weak var viewController: UIViewController?
-    private static var alertIsShown = false
+    private var alertIsShown = false
     
     private let alertCardView: UIView = {
         let view = UIView()
@@ -76,14 +82,8 @@ final class AlertView: UIView {
     
     
     // MARK: - Life Cycle
-    private init(alertKind: AlertKind, viewController: UIViewController) {
-        self.alertKind = alertKind
-        self.viewController = viewController
-        super.init(frame: .zero)
-        
-        setupViews()
-        setupConstraints()
-        setAppearance(alertKind)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
     }
     
     required init?(coder: NSCoder) {
@@ -100,24 +100,47 @@ final class AlertView: UIView {
         }
     }
     
-    // MARK: - Static Methods
-    static func presentAlert(alertKind: AlertKind, viewController: UIViewController) {
+    // MARK: - Methods
+    func presentAlert(alertKind: AlertKind, viewController: UIViewController) {
         if !alertIsShown {
-            AlertView(alertKind: alertKind, viewController: viewController)
+            self.alertKind = alertKind
+            self.viewController = viewController
+            
+            setupViews()
+            setupConstraints()
+            animateAlertToAppear()
+            setAppearance(alertKind)
             alertIsShown.toggle()
         }
     }
     
-    static func dismissAlert(from viewController: UIViewController?) {
+    func dismissAlert(from viewController: UIViewController?) {
         if alertIsShown {
-            guard let viewController = viewController else { return }
-            let alert = viewController.view.subviews.last
-            alert?.removeFromSuperview()
-            alertIsShown.toggle()
+            let animationDuration = 0.3
+            animateAlertToDisappear(animationDuration)
+            DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
+                guard let viewController = viewController else { return }
+                let alert = viewController.view.subviews.last
+                alert?.removeFromSuperview()
+                self.alertIsShown.toggle()
+            }
+ 
         }
     }
     
-    // MARK: - Instance Methods
+    // MARK: - Private Methods
+    private func animateAlertToAppear() {
+        UIView.animate(withDuration: 0.5) {
+            self.alertCardView.center = CGPoint(x: 0, y: 200)
+        }
+    }
+    
+    private func animateAlertToDisappear(_ duration: Double) {
+        UIView.animate(withDuration: duration + 0.2) {
+            self.alertCardView.frame.origin = CGPoint(x: 10, y: -200)
+        }
+    }
+    
     private func setAppearance(_ alertKind: AlertKind) {
         switch alertKind {
         case .error(let loginError):

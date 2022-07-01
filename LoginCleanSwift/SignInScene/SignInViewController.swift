@@ -26,6 +26,8 @@ class SignInViewController: UIViewController {
     
     // MARK: - Properties
     weak var signInView: SignInViewInput?
+    var alertView: AlertView?
+    
     var interactor: SignInInteractor?
     weak var authorizationCoordinator: AuthorizationCoordinator?
     
@@ -61,12 +63,14 @@ class SignInViewController: UIViewController {
     }
     
     func presentAlertAndHideKeybord(_ alertKind: AlertKind) {
-        AlertView.presentAlert(alertKind: alertKind, viewController: self)
+        alertView = AlertView(frame: .zero)
+        alertView?.presentAlert(alertKind: alertKind, viewController: self)
         signInView?.hideKeybord()
     }
     
     func dissmissAlert() {
-        AlertView.dismissAlert(from: self)
+        alertView?.dismissAlert(from: self)
+        alertView = nil
     }
     
 }
