@@ -11,7 +11,7 @@ enum SearchCategoryHeaderType: Int, CaseIterable {
     case searchCategory, searchBar
 }
 
-class SearchCategoryHeaderView: UICollectionView {
+final class SearchCategoryHeaderView: UICollectionView {
     
     convenience init() {
         let frame = CGRect(x: 0, y: 0, width: 0, height: 90)

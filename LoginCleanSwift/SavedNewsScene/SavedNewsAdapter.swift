@@ -29,13 +29,13 @@ struct SavedNewsAdapter {
         guard let articlesCountInSection = articlesForSection(section)?.count else { fatalError() }
         return articlesCountInSection
     }
-    // works perfectly fine
+  
     func getDictKeyForSection(_ section: Int) -> Int {
         let sortedKeys = savedArticlesDict.keys.sorted { $0 < $1 }
         let key = sortedKeys[section]
         return key
     }
-    // works perfectly fine
+
     func articlesForSection(_ section: Int) -> [ArticleModelProtocol]? {
         var array: [ArticleModelProtocol]?
         let key = getDictKeyForSection(section)
@@ -54,18 +54,11 @@ struct SavedNewsAdapter {
         }
         return title
     }
-    // Needs testing
+    
     func getSavedArticle(for indexPath: IndexPath) -> ArticleModelProtocol {
         guard let articlesFromSection = articlesForSection(indexPath.section) else { fatalError() }
         return articlesFromSection[indexPath.row]
     }
-    
-    // To be deleted after getSavedArticle is tested / UPD: Waits to be deleted
-//    func savedArticle(for indexPath: IndexPath) -> ArticleModelProtocol {
-//        guard let articlesFromSection = articlesForSection(indexPath.section) else { fatalError() }
-//        let articleFromSection = savedArticles.first { $0.title == articlesFromSection[indexPath.row].title }
-//        return articleFromSection!
-//    }
     
     mutating func deleteFromSavedNews(_ article: ArticleModelProtocol, at indexPath: IndexPath) {
         guard var articles = articlesForSection(indexPath.section) else { return }
@@ -90,7 +83,6 @@ struct SavedNewsAdapter {
         }
         return determinedTitle
     }
-    
     
     // Call upon initializaation
     private mutating func initializeDictionary() {

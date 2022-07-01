@@ -230,10 +230,7 @@
 		51511D3127F8D4090093D4B8 /* LoginCleanSwift */ = {
 			isa = PBXGroup;
 			children = (
-				514BC73A27FF1FF6005D3CF7 /* Coordinator.swift */,
-				5189E489281017B100A0CCBF /* AuthorizationCoordinator.swift */,
-				5189E487280C35AF00A0CCBF /* ProfileCoordinator.swift */,
-				513A2597284A27CB00129968 /* SavedArticlesCoordinator.swift */,
+				51CDCD85286EE0E9001F49F7 /* Coordinators */,
 				51511D4B27F8D5580093D4B8 /* SignInScene */,
 				514BC72A27FE0C8C005D3CF7 /* SignUpScene */,
 				514BC73C2801A9BE005D3CF7 /* ProfileScene */,
@@ -286,6 +283,17 @@
 				51D135582858B6B200B3E2BA /* SavedNewsAdapter.swift */,
 			);
 			path = SavedNewsScene;
+			sourceTree = "<group>";
+		};
+		51CDCD85286EE0E9001F49F7 /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				514BC73A27FF1FF6005D3CF7 /* Coordinator.swift */,
+				5189E489281017B100A0CCBF /* AuthorizationCoordinator.swift */,
+				5189E487280C35AF00A0CCBF /* ProfileCoordinator.swift */,
+				513A2597284A27CB00129968 /* SavedArticlesCoordinator.swift */,
+			);
+			path = Coordinators;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

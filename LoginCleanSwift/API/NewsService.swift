@@ -11,7 +11,7 @@ enum FetchError: Error {
     case NoTopNewsLeft
 }
 
-class NewsService {
+final class NewsService {
     private let session = URLSession.shared
     private let decoder = JSONDecoder()
     static let shared = NewsService()
@@ -27,7 +27,6 @@ class NewsService {
     }
     private var pageNumber = 0
     private let apiKey = "&apiKey=fa2130cfbf954c5f888fd55eb8f7b0c9"
-    // API keys: 9497dbb41ea348d7932167d98fbd4c9b 3e3d22e0bfc946688a532dc76535414b fa2130cfbf954c5f888fd55eb8f7b0c9
     
     var searchArticlesCategory: SearchArticlesCategoryType = .general {
         didSet { if oldValue != searchArticlesCategory { pageNumber = 0 } }
@@ -36,8 +35,9 @@ class NewsService {
     func fetchNews(with query: String? = nil,
                           for category: SearchArticlesCategoryType? = nil,
                           compleation: @escaping (Result<ProfileModel.ArticleModel, FetchError>) -> Void) {
+        
         configureSearchingMode(query, for: category)
-        print("DEBUG:: NewsService.fetchNews self.query; \(self.query)")
+    
         fetchNewsModels { articles in
             guard articles.count > 0 else {
                 DispatchQueue.main.async { compleation(.failure(.NoTopNewsLeft)) }
@@ -45,7 +45,8 @@ class NewsService {
             }
             articles.forEach { [weak self] article in
                 self?.fetchImage(with: article.urlToImage!) { imageData in
-                    DispatchQueue.main.async { compleation(.success(ProfileModel.ArticleModel(article: article, imageData: imageData)))
+                    DispatchQueue.main.async {
+                        compleation(.success(ProfileModel.ArticleModel(article: article, imageData: imageData)))
                     }
                 }
             }
@@ -54,6 +55,7 @@ class NewsService {
     
     private func fetchNewsModels(compleation: @escaping ([Article]) -> Void) {
         var url: URL!
+        
         if isSearchingMode {
             guard let queryUrl = URL(string: link + String(pageNumber) + "&q=" + query + apiKey) else { return }
             url = queryUrl
@@ -61,8 +63,6 @@ class NewsService {
             guard let categoryUrl = URL(string: link + String(pageNumber) + searchArticlesCategory.apiCategoryRequest + apiKey) else { return }
             url = categoryUrl
         }
-        print("DEBUG:: NewsService.fetchNews pageNumber: \(pageNumber)")
-        print("DEBUG:: \(url)")
         
         session.dataTask(with: url) { [weak self] data, _ , error in
             guard let data = data,
@@ -74,8 +74,6 @@ class NewsService {
             compleation(newsModelsHasImages)
         }.resume()
     }
-    
-    // ===========================================================
     
     private func configureSearchingMode(_ query: String?, for category: SearchArticlesCategoryType?) {
         if let query = query {

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SearchCategoryBarCell: UICollectionViewCell {
+final class SearchCategoryBarCell: UICollectionViewCell {
     
     static let identifier = String(describing: SearchCategoryBarCell.self)
     

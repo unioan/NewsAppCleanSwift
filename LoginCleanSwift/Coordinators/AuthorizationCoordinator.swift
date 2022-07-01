@@ -8,7 +8,7 @@
 import UIKit
 import PhotosUI
 
-class AuthorizationCoordinator: Coodrinator {
+final class AuthorizationCoordinator: Coodrinator {
     var childCoordinators: [Coodrinator] = []
     
     unowned let navigationController: UINavigationController
@@ -62,7 +62,6 @@ extension AuthorizationCoordinator: SignUpViewControllerCoordinatorDelegate {
         picker.delegate = signUpVC
         signUpVC.present(picker, animated: true)
     }
-    
     
 }
 

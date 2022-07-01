@@ -7,7 +7,7 @@
 
 import Network
 
-class NetworkMonitor {
+final class NetworkMonitor {
     
     static let shared = NetworkMonitor()
     
@@ -22,12 +22,10 @@ class NetworkMonitor {
             guard let self = self else { return }
             self.status = path.status
             if self.isReachable {
-                print("DEBUG::: status is \(self.status)")
                 DispatchQueue.main.async {
                     compleation(true)
                 }
             } else {
-                print("DEBUG::: status is \(self.status)")
                 DispatchQueue.main.async {
                     compleation(false)
                 }

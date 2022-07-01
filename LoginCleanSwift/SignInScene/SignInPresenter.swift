@@ -16,18 +16,15 @@ enum SignInState {
     case error(LoginError)
 }
 
-class SignInPresenter: SignInPresentationLogic {
-    
+final class SignInPresenter: SignInPresentationLogic {
     
     // MARK: - Properties
     var viewController: SignInDisplayLogic!
-    
     
     // MARK: - Life Cycle
     deinit {
         print("SignInPresenter dealocate from memory")
     }
-    
     
     // MARK: - Methods
     func present(_ state: SignInState) {

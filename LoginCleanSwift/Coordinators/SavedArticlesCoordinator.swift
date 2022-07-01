@@ -11,7 +11,7 @@ protocol BackToProfileCoordinatorProtocol: AnyObject {
     func navigateBackToProfileCoordinator()
 }
 
-class SavedArticlesCoordinator: Coodrinator {
+final class SavedArticlesCoordinator: Coodrinator {
     
     unowned let navigationController: UINavigationController
     
@@ -33,14 +33,13 @@ class SavedArticlesCoordinator: Coodrinator {
         savedArticlesVC.interactor = interactor
         
         savedArticlesVC.savedCoordinator = self
-        // Remove savedArticles
         savedArticlesVC.savedArticles = savedArticles
-        // Initialize SavedNewsModel with array of savedArticles
         navigationController.pushViewController(savedArticlesVC, animated: true)
     }
     
 }
 
+// MARK: - SavedNewsViewController Delegate
 extension SavedArticlesCoordinator: SavedNewsTableVCCoordinatorDelegate {
     func navigateBackToProfileCoordinator() {
         delegate?.navigateBackToProfileCoordinator()

@@ -97,7 +97,10 @@ final class SignInView: UIView {
     
     // MARK: - Actions
     @objc func loginButtonTapped() {
-        delegate?.loginDataSubmited(login: loginTF.text!, password: passwordTF.text!)
+        guard let lowercasedLogin = loginTF.text?.lowercased(),
+              let password = passwordTF.text else { return }
+        print("DEBUG::: login: \(lowercasedLogin) and password: \(password) entered to SignInView ")
+        delegate?.loginDataSubmited(login: lowercasedLogin, password: password)
     }
     
     @objc func signUpButtonTapped() {

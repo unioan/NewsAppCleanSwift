@@ -12,7 +12,7 @@ protocol SignUpPresentationLogic {
     func successfullyRegistered()
 }
 
-class SignUpPresentor: SignUpPresentationLogic {
+final class SignUpPresentor: SignUpPresentationLogic {
     
     weak var viewController: SignUpViewDisplayLogic?
     

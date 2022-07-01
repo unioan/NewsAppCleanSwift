@@ -11,7 +11,7 @@ protocol SignInBusinessLogic {
     func fetchUser(_ request: SignInModels.Request)
 }
 
-class SignInInteractor: SignInBusinessLogic {
+final class SignInInteractor: SignInBusinessLogic {
     
     // MARK: - Properties
     var presentor: SignInPresentationLogic!

@@ -22,7 +22,7 @@ protocol AuthorizationCoordinateDelegate: AnyObject { // Talks to coordinator
 }
 
 
-class SignInViewController: UIViewController {
+final class SignInViewController: UIViewController {
     
     // MARK: - Properties
     weak var signInView: SignInViewInput?

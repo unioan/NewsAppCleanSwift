@@ -11,7 +11,7 @@ protocol BackToAuthorizstionCoordinateDelegate: AnyObject {
     func navigateToAuthorizationScene()
 }
 
-class ProfileCoordinator: Coodrinator {
+final class ProfileCoordinator: Coodrinator {
     
     var childCoordinators: [Coodrinator] = []
     weak var delegate: BackToAuthorizstionCoordinateDelegate?
@@ -20,12 +20,6 @@ class ProfileCoordinator: Coodrinator {
     
     required init(navigationController: UINavigationController) {
         self.navigationController = navigationController
-    }
-    
-    func start() {
-        let profileVC = ProfileViewController()
-        profileVC.profileCoordinator = self
-        navigationController.pushViewController(profileVC, animated: true)
     }
     
     func start(_ userModel: UserModel) {
@@ -39,8 +33,7 @@ class ProfileCoordinator: Coodrinator {
     
 }
 
-
-
+// MARK: - SavedNewsViewController Delegate
 extension ProfileCoordinator: ProfileVCCoordinatorDelegate {
     func showWebPage(_ urlString: String) {
         let webVC = WebViewController()
@@ -60,7 +53,7 @@ extension ProfileCoordinator: ProfileVCCoordinatorDelegate {
     }
     
 }
-
+// MARK: - SavedArticles Coordinator Coordinator Delegate
 extension ProfileCoordinator: BackToProfileCoordinatorProtocol {
     func navigateBackToProfileCoordinator() {
         navigationController.navigationBar.prefersLargeTitles = false

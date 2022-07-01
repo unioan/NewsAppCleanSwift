@@ -12,7 +12,7 @@ protocol SignUpBusinessLogic {
     func saveUserAuthData(_ request: SignUpModel.RegisterUser.Request)
 }
 
-class SignUpInteractor {
+final class SignUpInteractor {
     
     var presentor: SignUpPresentationLogic?
     

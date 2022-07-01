@@ -12,7 +12,7 @@ protocol SignUpViewInput: AnyObject {
     func setImageToPhotoView(_ image: UIImage)
 }
 
-class SignUpView: UIView {
+final class SignUpView: UIView {
     
     // MARK: - Properties
     weak var delegate: SignUpViewOutput?
@@ -131,12 +131,14 @@ class SignUpView: UIView {
     }
     
     @objc func registerButtonPressed() {
-        let photoData = photoView.image?.pngData()
-        
-        let userModel = UserModel(login: loginTF.text ?? "No",
-                                  password: passwordTF.text  ?? "No",
-                                  name: nameTF.text ?? "No",
-                                  number: numberTF.text  ?? "No",
+        guard let photoData = photoView.image?.pngData(),
+              let login = loginTF.text?.lowercased(),
+              let password = passwordTF.text else { return }
+        print("DEBUG::: login: \(login) and password: \(password) entered to SignUp View ")
+        let userModel = UserModel(login: login,
+                                  password: password,
+                                  name: nameTF.text ?? "Anonim",
+                                  number: numberTF.text  ?? "Number is hidden",
                                   photo: photoData)
         let userAuthData = UserAuthData(userModel)
         

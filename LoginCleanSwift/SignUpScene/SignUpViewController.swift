@@ -22,7 +22,7 @@ protocol SignUpViewDisplayLogic: AnyObject {
     func registrationFinished()
 }
 
-class SignUpViewController: UIViewController {
+final class SignUpViewController: UIViewController {
     
     // MARK: - Properties
     weak var signupView: SignUpViewInput?
