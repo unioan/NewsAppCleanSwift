@@ -1,5 +1,6 @@
 # Intro
 
+
 ## About application
 The application allows users to get the top latest news sorted by categories and search the news of interest by making a quivery. 
 When a row with a particular news has been tapped the app loads a web page with the news in the browser.
@@ -14,14 +15,16 @@ The project implements CleanSwift a architecture and consist of 4 scenes:
 - Sign up scene;
 - Profile scene;
 - Saved news scene;
-Each scene comprises view, viewController, interactor, presenter and model. Those classes create a specific data flow known as VIP. View Controller is responsible for updating UI and holds weak referense to interactor. Interactor process bussiness logic and holds weak referens to presentor. Presentor prepares data recived from interactor to be displayed in viewController. 
- 
-Navigation between different scenes is carried out through Coordinator pattern. The pattern allows to encapsulate navigation logic in separate class making it easy to create, configure and navigate to the next scene. 
 
-Networking and password management is implemented using Singleton. For data persistance UserDefaults is used. 
+Each scene comprises a view, viewController, interactor, presenter, and model. Those classes create a specific data flow known as VIP. View Controller is responsible for updating UI and holds a weak reference to an interactor. Interactor processes business logic and holds a weak reference to a presenter. The presenter prepares data received from the interactor to be displayed in a viewController. 
+ 
+Navigation between different scenes is carried out through the Coordinator pattern. The pattern allows to encapsulate navigation logic in separate the class making it easy to create, configure and navigate to the next scene. 
+
+Networking and password management are implemented using Singleton. UserDefaults is used to persist user accounts in the device memory.
 
 ## Layout
-
+All view classes make heavy use of StackViews. Those stacks are initialized using anonymous function making staks neatly organized inside and easyly constrained in the separate function lately. 
+For instance, NewsCell uses StackView to layout cells' UI elements:
 ```swift
     private lazy var cellStack: UIStackView = {
         let textStack = UIStackView(arrangedSubviews: [newsTitleLabel, newsDescriptionView])
