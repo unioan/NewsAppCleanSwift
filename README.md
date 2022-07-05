@@ -8,7 +8,7 @@ Saved news are appointed to sections with the respective date of save and can be
 ![DemoNewsApp](https://user-images.githubusercontent.com/76248402/176926999-55a349d3-cd27-4dfb-b467-f530190b4486.gif)
 
 ## Architecture
-The project implements CleanSwift a architecture and consist of 4 scenes:
+The project implements **CleanSwift** a architecture and consist of 4 scenes:
 - Sign in scene;
 - Sign up scene;
 - Profile scene;
@@ -16,15 +16,13 @@ The project implements CleanSwift a architecture and consist of 4 scenes:
 
 Each scene comprises a view, viewController, interactor, presenter, and model. Those classes create a specific data flow known as VIP. View Controller is responsible for updating UI and holds a weak reference to an interactor. Interactor processes business logic and holds a weak reference to a presenter. The presenter prepares data received from the interactor to be displayed in a viewController. 
  
-Navigation between different scenes is carried out through the Coordinator pattern. The pattern allows to encapsulate navigation logic in separate the class making it easy to create, configure and navigate to the next scene. 
+Navigation between different scenes is carried out through the **Coordinator** pattern. The pattern allows to encapsulate navigation logic in separate the class making it easy to create, configure and navigate to the next scene. 
 
 Networking and password management are implemented using Singleton. UserDefaults is used to persist user accounts in the device memory.
 
 ## Layout
-
-### StackView
 All view classes make heavy use of StackViews. Those stacks are initialized using an anonymous function making stacks neatly organized and easily constrained in the separate function lately.
-This is how NewsCell uses anonymous function to create StackView:
+This is how NewsCell uses anonymous function to create cellStack:
 
 ```swift
     private lazy var cellStack: UIStackView = {
@@ -57,3 +55,10 @@ private func setConstrains() {
                                  cellStack.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -5)])
 }
 ```
+
+# Scenes
+
+## Sign up & Log in scenes
+To use the application user needs to create an account. The proccess begins by pressing "sign up" button. After that user ends up on sign up sceen where data for user's account is to be provided. When nesscesary data has been provided and "submit" button pressed log in sceen comes back. 
+
+![SignUpDemo](https://user-images.githubusercontent.com/76248402/177308931-346430a7-7172-465f-a803-e3e5382e2e09.gif)
