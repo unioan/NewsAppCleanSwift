@@ -66,7 +66,7 @@ Log in scene checks if a user has entered the correct login and password. If the
 
 ![LogInDemo](https://user-images.githubusercontent.com/76248402/177337468-d18d80aa-39b5-4317-b651-48d5b82b6721.gif)
 
-## Profile sceen 
+## Profile scene 
 The screen consists of three main parts. The first one is user data which is displayed right under the navigation bar. The second one is a collection view containing a news categories bar and search bar to look for news globaly. The last one is table view which is responsible for showing news for chosen category or news found through global search. 
 
 ![ProfileViewScheme](https://user-images.githubusercontent.com/76248402/177387276-7d17fdd7-e7d5-410e-bc17-1f1cf46a43ee.jpeg)
