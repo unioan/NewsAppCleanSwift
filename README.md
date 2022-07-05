@@ -71,3 +71,7 @@ The screen consists of three main parts. The first one is user data which is dis
 
 ![ProfileViewScheme](https://user-images.githubusercontent.com/76248402/177387276-7d17fdd7-e7d5-410e-bc17-1f1cf46a43ee.jpeg)
 
+### News categories & search bar
+When a particular category is selected it changes its appearane and scrolled to be in the center of the screen. When user decides to search news by query, news categories bar becomes deactivated until user taps "cancel" button in the search bar. 
+
+![News categories and Search bar](https://user-images.githubusercontent.com/76248402/177397926-5160a2b4-b794-4079-bbe6-dd2119d4c909.gif)
