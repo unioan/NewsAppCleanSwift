@@ -42,3 +42,18 @@ This is how NewsCell uses anonymous function to create StackView:
         return stack
     }()
 ```
+
+Then we can use cellStack in functions that responsible for setting up views and constraints.  
+
+```swift
+private func setViews() {
+    cardView.addSubViewsAndTamicOff([cellStack])
+}
+
+private func setConstrains() {
+    NSLayoutConstraint.activate([cellStack.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 5),
+                                 cellStack.leadingAnchor.constraint(equalTo: cardView.leadingAnchor),
+                                 cellStack.trailingAnchor.constraint(equalTo: cardView.trailingAnchor),
+                                 cellStack.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -5)])
+}
+```
