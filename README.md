@@ -1,7 +1,5 @@
 # Intro
 
-
-## About application
 The application allows users to get the top latest news sorted by categories and search the news of interest by making a quivery. 
 When a row with a particular news has been tapped the app loads a web page with the news in the browser.
 A user can save news by swiping the row towards the left side of the screen. Saved news are available to a user on the separate “Saved news” screen. 
@@ -23,8 +21,11 @@ Navigation between different scenes is carried out through the Coordinator patte
 Networking and password management are implemented using Singleton. UserDefaults is used to persist user accounts in the device memory.
 
 ## Layout
-All view classes make heavy use of StackViews. Those stacks are initialized using anonymous function making staks neatly organized inside and easyly constrained in the separate function lately. 
-For instance, NewsCell uses StackView to layout cells' UI elements:
+
+### StackView
+All view classes make heavy use of StackViews. Those stacks are initialized using an anonymous function making stacks neatly organized and easily constrained in the separate function lately.
+This is how NewsCell uses anonymous function to create StackView:
+
 ```swift
     private lazy var cellStack: UIStackView = {
         let textStack = UIStackView(arrangedSubviews: [newsTitleLabel, newsDescriptionView])
