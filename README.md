@@ -57,7 +57,6 @@ private func setConstrains() {
 ```
 
 # Scenes
-
 ## Sign up & Log in scenes
 To use the application user needs to create an account. The process begins when the "sign up" button is pressed. After that user ends up on a sign up sceen where data for user's account is to be provided. When necessary data has been provided and the "submit" button pressed log in screen comes back. 
 
@@ -66,3 +65,9 @@ To use the application user needs to create an account. The process begins when 
 Log in scene checks if a user has entered the correct login and password. If there is a mistake in one of them the application will show the respective alert. When correct credentials have been provided user is taken to the profile screen where account details are displayed along with the top general news.
 
 ![LogInDemo](https://user-images.githubusercontent.com/76248402/177337468-d18d80aa-39b5-4317-b651-48d5b82b6721.gif)
+
+## Profile sceen 
+The screen consists of three main parts. The first one is user data which is displayed right under the navigation bar. The second one is a collection view containing a news categories bar and search bar to look for news globaly. The last one is table view which is responsible for showing news for chosen category or news found through global search. 
+
+![ProfileViewScheme](https://user-images.githubusercontent.com/76248402/177387276-7d17fdd7-e7d5-410e-bc17-1f1cf46a43ee.jpeg)
+
