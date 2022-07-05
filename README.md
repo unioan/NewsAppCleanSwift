@@ -8,7 +8,7 @@ Saved news are appointed to sections with the respective date of save and can be
 ![DemoNewsApp](https://user-images.githubusercontent.com/76248402/176926999-55a349d3-cd27-4dfb-b467-f530190b4486.gif)
 
 ## Architecture
-The project implements **CleanSwift** a architecture and consist of 4 scenes:
+The project implements **CleanSwift** architecture and consist of 4 scenes:
 - Sign in scene;
 - Sign up scene;
 - Profile scene;
@@ -59,6 +59,10 @@ private func setConstrains() {
 # Scenes
 
 ## Sign up & Log in scenes
-To use the application user needs to create an account. The proccess begins by pressing "sign up" button. After that user ends up on sign up sceen where data for user's account is to be provided. When nesscesary data has been provided and "submit" button pressed log in sceen comes back. 
+To use the application user needs to create an account. The process begins when the "sign up" button is pressed. After that user ends up on a sign up sceen where data for user's account is to be provided. When necessary data has been provided and the "submit" button pressed log in screen comes back. 
 
-![SignUpDemo](https://user-images.githubusercontent.com/76248402/177308931-346430a7-7172-465f-a803-e3e5382e2e09.gif)
+![SignUpDemo](https://user-images.githubusercontent.com/76248402/177310066-9b9da66c-cdb3-4434-be38-92cf25d62047.gif)
+
+Log in scene checks if a user has entered the correct login and password. If there is a mistake in one of them the application will show the respective alert. When correct credentials have been provided user is taken to the profile screen where account details are displayed along with the top general news.
+
+![LogInDemo](https://user-images.githubusercontent.com/76248402/177337468-d18d80aa-39b5-4317-b651-48d5b82b6721.gif)
