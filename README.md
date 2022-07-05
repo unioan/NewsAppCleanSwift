@@ -1,6 +1,6 @@
 # Intro
 
-The application allows users to get the top latest news sorted by categories and search the news of interest by making a quivery. 
+The application allows users to get the top latest news sorted by categories and search the news of interest by making a query. 
 When a row with a particular news has been tapped the app loads a web page with the news in the browser.
 A user can save news by swiping the row towards the left side of the screen. Saved news are available to a user on the separate “Saved news” screen. 
 Saved news are appointed to sections with the respective date of save and can be removed from saved if a user decides so. 
