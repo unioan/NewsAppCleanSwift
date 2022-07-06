@@ -78,7 +78,7 @@ When a particular category is selected it changes its appearane and scrolled to 
 
 ### Fetching news from the web
 Class NewsService handles all logic related to fetching news. The class can be configured to fetch news by category or query. 
-There are private isSearchingMode property and configureSearchingMode(_ query: String?, for category: SearchArticlesCategoryType?) method that help the class to switch between those two searching modes. 
+There are private isSearchingMode property and configureSearchingMode(_ query: String?, for category: SearchArticlesCategoryType?) method that help the class to switch between those two searching modes. If data is provided for the function's query parameter the class uses URL for query mode. If there is none, it uses URL to fetch news for the selected category. 
 
 ```swift 
     final class NewsService {
