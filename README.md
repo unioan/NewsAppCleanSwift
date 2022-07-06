@@ -75,3 +75,27 @@ The screen consists of three main parts. The first one is user data which is dis
 When a particular category is selected it changes its appearane and scrolled to be in the center of the screen. When user decides to search news by query, news categories bar becomes deactivated until user taps "cancel" button in the search bar. 
 
 ![News categories and Search bar](https://user-images.githubusercontent.com/76248402/177397926-5160a2b4-b794-4079-bbe6-dd2119d4c909.gif)
+
+### Fetching news from the web. 
+Class NewsService handels all logic related to fetching news. The class can be configured to fetch news by category or query. 
+There are private isSearchingMode propery and configureSearchingMode(_ query: String?, for category: SearchArticlesCategoryType?) method that help the class to switch between those two searching modes. 
+
+```swift 
+    final class NewsService {
+        
+    private var isSearchingMode = false
+    
+        private func configureSearchingMode(_ query: String?, for category: SearchArticlesCategoryType?) {
+        if let query = query {
+            isSearchingMode = true
+            pageNumber += 1
+            self.query = query
+        }
+        if let category = category {
+            isSearchingMode = false
+            pageNumber += 1
+            self.query = ""
+            searchArticlesCategory = category
+        }
+    }
+```
