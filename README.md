@@ -117,7 +117,7 @@ Then fetchNewsModels(compleation: @escaping ([Article]) -> Void) function is cal
         session.dataTask(with: url) { [weak self] data, _ , error in
             guard let data = data,
                   let newsModel = try? self?.decoder.decode(NewsModel.self, from: data) else { return }
-            compleation(newsModelsHasImages)
+            compleation(newsModel.articles)
         }.resume()
     }
 ```
