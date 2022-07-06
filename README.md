@@ -114,7 +114,7 @@ Then fetchNewsModels(compleation: @escaping ([Article]) -> Void) function is cal
             url = categoryUrl
         }
         
-        session.dataTask(with: url) { [weak self] data, _ , error in
+        session.dataTask(with: url) { [weak self] data, _ , _ in
             guard let data = data,
                   let newsModel = try? self?.decoder.decode(NewsModel.self, from: data) else { return }
             compleation(newsModel.articles)
