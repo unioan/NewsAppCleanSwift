@@ -107,17 +107,10 @@ Then fetchNewsModels(compleation: @escaping ([Article]) -> Void) function is cal
         var url: URL!
         
         if isSearchingMode {
-            guard let queryUrl = URL(string: link +
-                                     String(pageNumber) +
-                                     "&q=" +
-                                     query +
-                                     apiKey) else { return }
+            guard let queryUrl = URL(string: link + String(pageNumber) + "&q=" + query + apiKey) else { return }
             url = queryUrl
         } else {
-            guard let categoryUrl = URL(string: link +
-                                        String(pageNumber) +
-                                        searchArticlesCategory.apiCategoryRequest +
-                                        apiKey) else { return }
+            guard let categoryUrl = URL(string: link + String(pageNumber) + searchArticlesCategory.apiCategoryRequest + apiKey) else { return }
             url = categoryUrl
         }
         
