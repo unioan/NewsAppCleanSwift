@@ -76,9 +76,9 @@ When a particular category is selected it changes its appearane and scrolled to 
 
 ![News categories and Search bar](https://user-images.githubusercontent.com/76248402/177397926-5160a2b4-b794-4079-bbe6-dd2119d4c909.gif)
 
-### Fetching news from the web. 
-Class NewsService handels all logic related to fetching news. The class can be configured to fetch news by category or query. 
-There are private isSearchingMode propery and configureSearchingMode(_ query: String?, for category: SearchArticlesCategoryType?) method that help the class to switch between those two searching modes. 
+### Fetching news from the web
+Class NewsService handles all logic related to fetching news. The class can be configured to fetch news by category or query. 
+There are private isSearchingMode property and configureSearchingMode(_ query: String?, for category: SearchArticlesCategoryType?) method that help the class to switch between those two searching modes. 
 
 ```swift 
     final class NewsService {
@@ -97,5 +97,34 @@ There are private isSearchingMode propery and configureSearchingMode(_ query: St
             self.query = ""
             searchArticlesCategory = category
         }
+    }
+```
+
+Then fetchNewsModels(compleation: @escaping ([Article]) -> Void) function is called. It assembles URL, uses it to fetch JSON data and then decode it to swift's data model. 
+
+```swift 
+ private func fetchNewsModels(compleation: @escaping ([Article]) -> Void) {
+        var url: URL!
+        
+        if isSearchingMode {
+            guard let queryUrl = URL(string: link +
+                                     String(pageNumber) +
+                                     "&q=" +
+                                     query +
+                                     apiKey) else { return }
+            url = queryUrl
+        } else {
+            guard let categoryUrl = URL(string: link +
+                                        String(pageNumber) +
+                                        searchArticlesCategory.apiCategoryRequest +
+                                        apiKey) else { return }
+            url = categoryUrl
+        }
+        
+        session.dataTask(with: url) { [weak self] data, _ , error in
+            guard let data = data,
+                  let newsModel = try? self?.decoder.decode(NewsModel.self, from: data) else { return }
+            compleation(newsModelsHasImages)
+        }.resume()
     }
 ```
