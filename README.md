@@ -72,7 +72,7 @@ The screen consists of three main parts. The first one is user data which is dis
 ![ProfileViewScheme](https://user-images.githubusercontent.com/76248402/177387276-7d17fdd7-e7d5-410e-bc17-1f1cf46a43ee.jpeg)
 
 ### News categories & search bar
-When a particular category is selected it changes its appearane and scrolled to be in the center of the screen. When user decides to search news by query, news categories bar becomes deactivated until user taps "cancel" button in the search bar. 
+When a particular category is selected it changes its appearance and scrolled to be in the center of the screen. When a user decides to search news by query, the news categories bar becomes deactivated until the user taps the "cancel" button in the search bar. When the query search is over news categories bar activates again and selects the category which was chosen before the query search had begun. 
 
 ![News categories and Search bar](https://user-images.githubusercontent.com/76248402/177397926-5160a2b4-b794-4079-bbe6-dd2119d4c909.gif)
 
@@ -126,3 +126,10 @@ Then fetchNewsModels(compleation: @escaping ([Article]) -> Void) function is cal
 The application monitors if a device is connected to the internet. If the connection is lost it will let user know about the problem. 
 
 ![NoInternetDemo](https://user-images.githubusercontent.com/76248402/177763408-c35ceb4e-e284-4b67-8917-a587db2cbec9.gif)
+
+### Saving news 
+To save any news user needs to swipe the row to the left. After that, a mark appears on the right side of the row signifying that the news has been successfully saved. Since the saved news can be met in several categories the code is designed to display the mark next to the right one despite the news can occupy a different position across different categories. 
+
+![SaveNewsDemo](https://user-images.githubusercontent.com/76248402/177789149-6f890023-221e-42f1-8865-e7b43a204b37.gif)
+
+## Profile scene 
