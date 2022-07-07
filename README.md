@@ -132,6 +132,6 @@ To save any news user needs to swipe the row to the left. After that, a mark app
 ![SaveNewsDemo](https://user-images.githubusercontent.com/76248402/177789149-6f890023-221e-42f1-8865-e7b43a204b37.gif)
 
 ## Saved news scene
-The scene is responsible for displaying saved news and removing those witch user is not interested in anymore. Additionaly, news are devided into sections by the save date. 
+The scene is responsible for displaying saved news and removing those the user is not interested in anymore. Additionally, the news is divided into sections by the save date.
 
 ![SavedNewsSceneDemo](https://user-images.githubusercontent.com/76248402/177806123-34a8cd95-7638-4125-a2c2-1b2402999a23.gif)
