@@ -1,5 +1,4 @@
 # Intro
-
 The application allows users to get the top latest news sorted by categories and search the news of interest by making a query. 
 When a row with a particular news has been tapped the app loads a web page with the news in the browser.
 A user can save news by swiping the row towards the left side of the screen. Saved news are available to a user on the separate “Saved news” screen. 
@@ -132,4 +131,7 @@ To save any news user needs to swipe the row to the left. After that, a mark app
 
 ![SaveNewsDemo](https://user-images.githubusercontent.com/76248402/177789149-6f890023-221e-42f1-8865-e7b43a204b37.gif)
 
-## Profile scene 
+## Saved news scene
+The scene is responsible for displaying saved news and removing those witch user is not interested in anymore. Additionaly, news are devided into sections by the save date. 
+
+![SavedNewsSceneDemo](https://user-images.githubusercontent.com/76248402/177806123-34a8cd95-7638-4125-a2c2-1b2402999a23.gif)
