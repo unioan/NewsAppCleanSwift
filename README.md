@@ -121,3 +121,8 @@ Then fetchNewsModels(compleation: @escaping ([Article]) -> Void) function is cal
         }.resume()
     }
 ```
+
+### Internet connection check
+The application monitors if a device is connected to the internet. If the connection is lost it will let user know about the problem. 
+
+![NoInternetDemo](https://user-images.githubusercontent.com/76248402/177763408-c35ceb4e-e284-4b67-8917-a587db2cbec9.gif)
