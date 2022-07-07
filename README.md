@@ -87,12 +87,10 @@ There are private isSearchingMode property and configureSearchingMode(_ query: S
         private func configureSearchingMode(_ query: String?, for category: SearchArticlesCategoryType?) {
         if let query = query {
             isSearchingMode = true
-            pageNumber += 1
             self.query = query
         }
         if let category = category {
             isSearchingMode = false
-            pageNumber += 1
             self.query = ""
             searchArticlesCategory = category
         }
